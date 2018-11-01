@@ -18,7 +18,7 @@ ok : OpenGL
 .cc.o:
 	$(CC) -c -O3 $(CFLAGS) $<
 
-OBJECTS_main = OpenGL.o Point.o Segment.o
+OBJECTS_main = OpenGL.o Point.o Segment.o Polynome.o
 
 
 OpenGL:  $(OBJECTS_main)

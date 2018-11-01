@@ -28,6 +28,7 @@
 #include "Test.cc"
 #include "Point.h"
 #include "Segment.h"
+#include "Polynome.h"
 
 using namespace std;
 
@@ -270,6 +271,20 @@ void init()
         points2.push_back(polynome2(i));
         i += 0.1;
     }
+    double num[4];
+    num[0] = 0;
+    num[1] = 2;
+    num[2] = 0;
+    num[3] = -1;
+    double denom[4];
+    denom[0] = 0;
+    denom[1] = 1;
+    denom[2] = 2;
+    denom[3] = -3;
+
+    Polynome p(num, denom);
+    cout << p.to_s() << endl;
+
     
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
