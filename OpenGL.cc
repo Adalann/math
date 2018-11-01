@@ -278,12 +278,16 @@ void init()
     num[3] = -1;
     double denom[4];
     denom[0] = 0;
-    denom[1] = 1;
+    denom[1] = 0;
     denom[2] = 2;
     denom[3] = -3;
 
     Polynome p(num, denom);
     cout << p.to_s() << endl;
+    double X1(0), X2(0);
+
+    p.solve_denom(X1, X2);
+    cout << "X1 : " << X1 << " X2 : " << X2 << endl;
 
     
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
