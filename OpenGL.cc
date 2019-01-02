@@ -4,8 +4,6 @@
 /*                                                       */
 /*********************************************************/ 
 
-// mesalib freeglut mesaglu
-
 /* inclusion des fichiers d'en-tete Glut */
 #ifndef __APPLE__
 #include <GL/glut.h>
@@ -28,7 +26,7 @@
 #include "Test.cc"
 #include "Point.h"
 #include "Segment.h"
-#include "Polynome.h"
+#include "FractionRationnelle.h"
 
 using namespace std;
 
@@ -139,7 +137,7 @@ void clavier(unsigned char touche, int x, int y)
     }
 }
 
-void reshape(int x,int y)
+void reshape(int x, int y)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -261,35 +259,19 @@ void init()
 { 
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
-    vector<Point> points1;
-    vector<Point> points2;
-    double const limit = -1000;
-    double i = limit;
-    while(i < -limit)
-    {
-        points1.push_back(polynome1(i));
-        points2.push_back(polynome2(i));
-        i += 0.1;
-    }
-    double num[4];
-    num[0] = 0;
-    num[1] = 2;
-    num[2] = 0;
-    num[3] = -1;
-    double denom[4];
-    denom[0] = 0;
-    denom[1] = 0;
-    denom[2] = 2;
-    denom[3] = -3;
 
-    Polynome p(num, denom);
-    cout << p.to_s() << endl;
-    double X1(0), X2(0);
+    double num[] = {-1, 0, 2};
+    double denom[] = {-3, 2, 1};
+    FractionRationnelle F(num, 3, denom, 3);
 
-    p.solve_denom(X1, X2);
-    cout << "X1 : " << X1 << " X2 : " << X2 << endl;
+    double racine1, racine2;
+    F.solve_denom(racine1, racine2);
 
-    
+    double y_assymptote_h = F.assymptote_h();
+
+    cout << F.to_s() << endl;
+    cout << "x1 : " << racine1 << " x2 : " << racine2 << endl;
+
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
         trace_point(I, 1., 0., 0., 10.);  //I
@@ -301,19 +283,12 @@ void init()
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
-        // for (int i = 0; i < points2.size() - 1; i++)
-        // {
-        //     trace_point(points2[i], 0, 1, 0, 7);
-        //     trace_segment(points2[i], points2[i + 1], 0, 1, 0., 2.0);
-        // }
+        trace_segment(racine1, -10000, racine1, 10000, 0., 155., 0., 2);
+        trace_segment(racine2, -10000, racine2, 10000, 0., 155., 0., 2);
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 4
-        // for(int i = 0; i < points1.size() - 1; i++)
-        // {
-        //     trace_point(points1[i], 0, 0, 1, 7);
-        //     trace_segment(points1[i], points1[i + 1], 0., 0., 1., 2.0);
-        // }
+        trace_segment(-10000., y_assymptote_h, 10000., y_assymptote_h, 0., 155., 0., 2);
     glEndList();
 
     glNewList(4, GL_COMPILE_AND_EXECUTE);  //liste numero 5
@@ -323,7 +298,6 @@ void init()
     glNewList(5, GL_COMPILE_AND_EXECUTE); //liste numero 6
         
     glEndList();
-
 
     cout << "\nDone." << endl;
 }
@@ -339,7 +313,7 @@ void affichage()
     // Pour la 3D
     // glRotatef(-angley,1.0,0.0,0.0);
     // glRotatef(-anglex,0.0,1.0,0.0);
-    // Pour la 2D    
+    // Pour la 2D
     glRotatef(-anglex + angley, 0.0, 0.0, 1.0);
     glScalef(Scal, Scal, Scal); // diminution de la vue de la scene
     glRotatef(180, 0.0, 1.0, 0.0);

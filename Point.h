@@ -10,7 +10,8 @@ class Point
     double getX() const;
     double getY() const;
 
-    private:
+
+  private:
     
     double x;
     double y;

@@ -18,13 +18,15 @@ ok : OpenGL
 .cc.o:
 	$(CC) -c -O3 $(CFLAGS) $<
 
-OBJECTS_main = OpenGL.o Point.o Segment.o Polynome.o
+OBJECTS_main = OpenGL.o Point.o Segment.o FractionRationnelle.o
 
 
 OpenGL:  $(OBJECTS_main)
 	$(CC) $(OBJECTS_main) -o OpenGL $(LIB_PATHS) $(LIBS)
 	
-
+	
+exe: OpenGL
+	./OpenGL
 
 indenter :
 	for i in *.h *.cpp do sed -i~ -f sed.sed  $i done

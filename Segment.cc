@@ -1,8 +1,6 @@
 #include "Point.h"
 #include "Segment.h"
 
-using namespace std;
-
 Segment::Segment()
 {
     a = Point(0., 0.);
