@@ -16,7 +16,6 @@
 #define Pi 3.141592654
 
 #include <vector>
-#include "Test.cc"
 #include "Point.h"
 #include "Segment.h"
 #include "FractionRationnelle.h"
@@ -222,7 +221,6 @@ void init()
     denominateur.affiche_polynome();
 
     FractionRationnelle F(numerateur, denominateur);
-
     
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O

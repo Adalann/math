@@ -4,9 +4,20 @@
 
 using namespace std;
 
-Polynome::Polynome() : m_coeficients(1)
+Polynome::Polynome()
 {
     m_coeficients = vector<double>(1);
+}
+
+Polynome::Polynome(int degre)
+{
+    for(int i = 0; i < degre + 1; i++)
+        m_coeficients.push_back(1);
+}
+
+Polynome::Polynome(const Polynome &original)
+{
+    m_coeficients = original.m_coeficients;
 }
 
 Polynome::Polynome(vector<double> coeficients)
@@ -67,7 +78,7 @@ vector<double> Polynome::get_coefs() const
     return m_coeficients;
 }
 
-Polynome& Polynome::operator -= (const Polynome &p)
+Polynome& Polynome::operator-=(const Polynome &p)
 {
     int size_membre_a = m_coeficients.size();
     int size_membre_b = p.m_coeficients.size();
@@ -84,6 +95,16 @@ Polynome& Polynome::operator -= (const Polynome &p)
             m_coeficients.push_back(-p.m_coeficients[i]);
     }
 
+    return *this;
+}
+
+Polynome& Polynome::operator*=(const Polynome &p)
+{
+    for(int i = 0; i < get_degre(); i++)
+    {
+
+    }
+    
     return *this;
 }
 
@@ -116,10 +137,47 @@ void Polynome::affiche_polynome()
     cout << endl;
 }
 
+void Polynome::decalage(int puissance, double coeficient = 1.0)
+{
+    if(puissance == 0)
+    {
+        for(int i = 0; i < m_coeficients.size(); i++)
+            m_coeficients[i] *= coeficient;
+    }
+    else if(puissance > 0)
+    {
+        for(int i = 0; i < puissance; i++)
+            m_coeficients.insert(0, 0);
+    }
+}
+
 Polynome operator-(Polynome const &p1, Polynome const &p2)
 {
     Polynome copie(p1);
     copie -= p2;
 
     return copie;
+}
+
+Polynome operator*(Polynome const &p1, Polynome const &p2)
+{
+    Polynome copie(p1);
+    copie *= p2;
+
+    return copie;
+}
+
+// Division euclidienne de P par M
+Polynome div_euclide(Polynome &P, Polynome &M)
+{
+    Polynome Q(1), R(P);
+    int curseur = 1;
+
+    while(R.get_degre() >= M.get_degre())
+    {
+        Q.m_coeficients[i] = R.m_coeficients[i + 1] / M.m_coeficients[i];
+        R = R - Q * M;
+    }
+
+    return Q;
 }
