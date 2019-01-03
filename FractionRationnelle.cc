@@ -64,6 +64,10 @@ double FractionRationnelle::assymptote_h()
     return res;
 }
 
+void divisionEuclidienne(double &m, double &p)
+{
+
+}
 
 int FractionRationnelle::get_degre(bool select)
 {

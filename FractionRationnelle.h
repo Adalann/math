@@ -13,6 +13,7 @@ class FractionRationnelle
         double getDenominateur() const;
         int solve_denom(double &x1, double &x2);
         double assymptote_h();
+        void divisionEuclidienne(double &m, double &p);
 
         std::string to_s();
 

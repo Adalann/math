@@ -34,6 +34,7 @@ indenter :
 
 clean :
 	rm -fr *.o
+	rm -fr obj/*.o
 	touch *.cc #*.h
 
 delete :
