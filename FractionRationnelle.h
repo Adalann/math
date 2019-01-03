@@ -3,26 +3,29 @@
 
 #include <string>
 #include <vector>
+#include "Polynome.h"
 
 class FractionRationnelle
 {
-    public:
-        FractionRationnelle();
-        FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom);
-        double getNumerateur() const;
-        double getDenominateur() const;
-        int solve_denom(double &x1, double &x2);
-        double assymptote_h();
-        void divisionEuclidienne(double &m, double &p);
+  public:
+    // Constructeurs
+    FractionRationnelle();
+    FractionRationnelle(Polynome numerateur, Polynome denominateur);
+    FractionRationnelle(const std::vector<double> &numerateur, const std::vector<double> &denominateur);
+    FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom);
 
-        std::string to_s();
+    // Méthodes
+    double get_numerateur() const;
+    double get_denominateur() const;
+    void assymptote_h();
+    void trace_assymptotes();
 
-    private:
-    
-        int get_degre(bool select = false);
+    // Méthodes d'affichage
+    std::string to_s();
 
-        std::vector<double> numerateur;
-        std::vector<double> denominateur;
+  private:
+    Polynome m_numerateur;
+    Polynome m_denominateur;
 };
 
 #endif

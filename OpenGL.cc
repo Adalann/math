@@ -4,13 +4,6 @@
 /*                                                       */
 /*********************************************************/ 
 
-/* inclusion des fichiers d'en-tete Glut */
-#ifndef __APPLE__
-#include <GL/glut.h>
-#else
-#include <GLUT/glut.h>
-#endif
-
 #include <ctime>
 #include <cmath>
 #include <string>
@@ -27,6 +20,7 @@
 #include "Point.h"
 #include "Segment.h"
 #include "FractionRationnelle.h"
+#include "Dessin.h"
 
 using namespace std;
 
@@ -63,8 +57,7 @@ int main(int argc, char **argv)
     /* Initialisation d'OpenGL */
     time_t now = time(0);
     tm * ltm = localtime(&now);
-    cout << ltm->tm_hour << endl;
-    if (ltm->tm_hour < 8 || ltm->tm_hour >= 19)
+    if (ltm->tm_hour < 9 || ltm->tm_hour >= 17)
         glClearColor(0.5, 0.5, 0.5, 0.0);
     else
         glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -205,51 +198,6 @@ void mousemotion(int x, int y)
 
 /****************************************************************
  **                                                            **
- **                    Fonctions de tracé                      **
- **                                                            **
- ****************************************************************/
-
-// Trace un point à partir de coordonnées
-void trace_point(double x, double y, double red, double green, double blue, double size)
-{
-    glColor3f(red, green, blue); // initialisation de la couleur
-	glPointSize(size);	         // initialisation de la taille
-	glBegin(GL_POINTS);	         // on trace un point
-	    glVertex2f(x,y);         // coordonnees du point
-	glEnd();	                 // fin de glBegin
-}
-
-// Trace un point à partir d'un objet Point
-void trace_point(Point p, double red, double green, double blue, double size)
-{
-    trace_point(p.getX(), p.getY(), red, green, blue, size);
-}
-
-// Trace un segement à partir des coordonnées des points
-void trace_segment(double x0, double y0, double x1, double y1, double red, double green, double blue, double size)
-{
-    glColor3f(red, green, blue); // initialisation de la couleur
-	glLineWidth(size);           // initialisation de la taille
-	glBegin(GL_LINES);           // on trace un segment
-	    glVertex2f(x0, y0);       // coordonnees du premier point
-        glVertex2f(x1, y1);   // coordonnees du dernier point 
-	glEnd();                     // fin de glBegin
-}
-
-// Trace un segment à partir de deux objets points
-void trace_segment(Point p0, Point p1, double red, double green, double blue, double size)
-{
-    trace_segment(p0.getX(), p0.getY(), p1.getX(), p1.getY(), red, green, blue, size);
-}
-
-// Trace 
-void trace_segment(Segment s, double red, double green, double blue, double size)
-{
-    trace_segment(s.getA(), s.getB(), red, green, blue, size);
-}
-
-/****************************************************************
- **                                                            **
  **                    Affichage de  la scene                  **
  **                                                            **
  ****************************************************************/
@@ -260,18 +208,22 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    double num[] = {-1, 0, 2};
-    double denom[] = {-3, 2, 1};
-    FractionRationnelle F(num, 3, denom, 3);
+    // double num[4] = {0, 2, 0, 1};
+    // double denom[3] = {1, 2, -3};
 
-    double racine1, racine2;
-    F.solve_denom(racine1, racine2);
+    // FractionRationnelle F(num, 4, denom, 3);
+    
+    double num[3] = {2, 0, -1};
+    double denom[3] = {1, 2, -3};
 
-    double y_assymptote_h = F.assymptote_h();
+    Polynome numerateur(num, 3);
+    Polynome denominateur(denom, 3);
 
-    cout << F.to_s() << endl;
-    cout << "x1 : " << racine1 << " x2 : " << racine2 << endl;
+    denominateur.affiche_polynome();
 
+    FractionRationnelle F(numerateur, denominateur);
+
+    
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
         trace_point(I, 1., 0., 0., 10.);  //I
@@ -283,25 +235,24 @@ void init()
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
-        trace_segment(racine1, -10000, racine1, 10000, 0., 155., 0., 2);
-        trace_segment(racine2, -10000, racine2, 10000, 0., 155., 0., 2);
+        F.trace_assymptotes();
     glEndList();
 
-    glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 4
-        trace_segment(-10000., y_assymptote_h, 10000., y_assymptote_h, 0., 155., 0., 2);
-    glEndList();
-
-    glNewList(4, GL_COMPILE_AND_EXECUTE);  //liste numero 5
+    glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
 
     glEndList();
 
-    glNewList(5, GL_COMPILE_AND_EXECUTE); //liste numero 6
+    glNewList(4, GL_COMPILE_AND_EXECUTE); //liste numero 4
+
+    glEndList();
+
+    glNewList(5, GL_COMPILE_AND_EXECUTE); //liste numero 5
         
     glEndList();
 
     cout << "\nDone." << endl;
 }
-   
+
 // fonction permettant d'afficher les objets en utilisant des listes   
 void affichage() 
 {
@@ -323,8 +274,9 @@ void affichage()
         glCallList(2);   // appel de la liste numero 2
         glCallList(3);   // appel de la liste numero 3
         glCallList(4);   // appel de la liste numero 4
-        glCallList(5);   // appel de la liste numero 4
-    glFlush(); 
+        glCallList(5);   // appel de la liste numero 5
+        glCallList(6);   // appel de la liste numero 6
+    glFlush();
     // On echange les buffers
     glutSwapBuffers();
 }

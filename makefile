@@ -1,3 +1,10 @@
+#CC       = gcc
+CC        = g++
+HDR_PATHS = -I/usr/X11R6/include
+LIBS      = -lglut -lGLU -lGL -lm -L/usr/X11/lib -lXext #-lXmu -lXi -lX11 -g-std=c++98
+CFLAGS    = $(HDR_PATHS) -Wno-deprecated
+OBJECTS   = OpenGL.o Point.o Segment.o FractionRationnelle.o Polynome.o Dessin.o
+
 ifeq ($(UNAME_S),Linux)
     LIB_PATHS= -L/usr/X11R6/lib -L/usr/lib
 endif
@@ -5,26 +12,15 @@ ifeq ($(UNAME_S),Darwin)
     LIB_PATHS= -framework GLUT -framework OpenGL -framework Cocoa
 endif
 
-HDR_PATHS= -I/usr/X11R6/include
-LIBS=-lglut -lGLU -lGL -lm -L/usr/X11/lib -lXext #-lXmu -lXi -lX11 -g-std=c++98
-
-CFLAGS=$(HDR_PATHS) -Wno-deprecated
-CC=g++
-#CC=gcc
-
-ok : OpenGL
+all : OpenGL
 	mv *.o obj/
+
+OpenGL:  $(OBJECTS)
+	$(CC) $(OBJECTS) -o OpenGL $(LIB_PATHS) $(LIBS)
 
 .cc.o:
 	$(CC) -c -O3 $(CFLAGS) $<
-
-OBJECTS_main = OpenGL.o Point.o Segment.o FractionRationnelle.o
-
-
-OpenGL:  $(OBJECTS_main)
-	$(CC) $(OBJECTS_main) -o OpenGL $(LIB_PATHS) $(LIBS)
-	
-	
+		
 exe: OpenGL
 	./OpenGL
 
