@@ -212,13 +212,11 @@ void init()
 
     // FractionRationnelle F(num, 4, denom, 3);
     
-    double num[3] = {2, 0, -1};
-    double denom[3] = {1, 2, -3};
+    double num[3] = {1, -1, -1};
+    double denom[2] = {2, -3};
 
     Polynome numerateur(num, 3);
-    Polynome denominateur(denom, 3);
-
-    denominateur.affiche_polynome();
+    Polynome denominateur(denom, 2);
 
     FractionRationnelle F(numerateur, denominateur);
     

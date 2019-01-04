@@ -56,6 +56,15 @@ void FractionRationnelle::trace_assymptotes()
         double y = m_numerateur.get_last_coef() / m_denominateur.get_last_coef();
         trace_segment(-100000, y, 100000, y, 0, 100, 0, 2);
     }
+
+    // Assymptote oblique
+    if(m_numerateur.get_degre() == m_denominateur.get_degre() + 1)
+    {
+        Polynome oblique = Polynome::div_euclide(m_numerateur, m_denominateur);
+        Point a(-100000, oblique.value_for(-100000));
+        Point b(100000, oblique.value_for(100000));
+        trace_segment(a, b, 0, 100, 0, 2);
+    }
 }
 
 string FractionRationnelle::to_s()

@@ -6,120 +6,201 @@ using namespace std;
 
 Polynome::Polynome()
 {
-    m_coeficients = vector<double>(1);
+    m_coefficients = vector<double>();
 }
 
 Polynome::Polynome(int degre)
 {
-    for(int i = 0; i < degre + 1; i++)
-        m_coeficients.push_back(1);
+    for(int i = 0; i < degre; i++)
+        m_coefficients.push_back(0.);
+
+    m_coefficients.push_back(1.);
 }
 
 Polynome::Polynome(const Polynome &original)
 {
-    m_coeficients = original.m_coeficients;
+    m_coefficients = original.m_coefficients;
 }
 
-Polynome::Polynome(vector<double> coeficients)
+Polynome::Polynome(const Polynome &original, int degre_limite)
 {
-    for (int i = coeficients.size() - 1; i >= 0; i--)
-        m_coeficients.push_back(coeficients[i]);
+    int i = original.get_degre();
+    while(i > degre_limite)
+    {
+        m_coefficients.push_back(0);
+        i--;
+    }
+    m_coefficients.push_back(original.m_coefficients[degre_limite]);
 }
 
-Polynome::Polynome(double coeficients[], size_t taille)
+Polynome::Polynome(vector<double> coefficients)
+{
+    for (int i = coefficients.size() - 1; i >= 0; i--)
+        m_coefficients.push_back(coefficients[i]);
+}
+
+Polynome::Polynome(double coefficients[], size_t taille)
 {
     for(int i = taille - 1; i >= 0; i--)
-        m_coeficients.push_back(coeficients[i]);
+        m_coefficients.push_back(coefficients[i]);
 }
 
-int Polynome::get_degre()
+int Polynome::get_degre() const
 {
-    return m_coeficients.size() - 1;
+    return m_coefficients.size() - 1;
 }
 
-int Polynome::solve(double &x1, double &x2)
+int Polynome::solve(double &x1, double &x2) const
 {
     int nb_solution = -1;
 
     if(get_degre() == 2)
     {
-        double delta = (m_coeficients[1] * m_coeficients[1]) - (4 * m_coeficients[0] * m_coeficients[2]);
+        double delta = (m_coefficients[1] * m_coefficients[1]) - (4 * m_coefficients[0] * m_coefficients[2]);
 
         if (delta < 0)
             nb_solution = 0;
         else if (delta == 0)
         {
-            x1 = x2 = -(m_coeficients[1] / (2 * m_coeficients[2]));
+            x1 = x2 = -(m_coefficients[1] / (2 * m_coefficients[2]));
             nb_solution = 1;
         }
         else
         {
-            x1 = (-m_coeficients[1] + sqrt(delta)) / (2 * m_coeficients[2]);
-            x2 = (-m_coeficients[1] - sqrt(delta)) / (2 * m_coeficients[2]);
+            x1 = (-m_coefficients[1] + sqrt(delta)) / (2 * m_coefficients[2]);
+            x2 = (-m_coefficients[1] - sqrt(delta)) / (2 * m_coefficients[2]);
             nb_solution = 2;
         }
     }
     else if(get_degre() == 1)
     {
-        x1 = x2 = -m_coeficients[1] / m_coeficients[2];
+        x1 = x2 = -m_coefficients[0] / m_coefficients[1];
         nb_solution = 1;
     }
 
     return nb_solution;
 }
 
-double Polynome::get_last_coef()
+double Polynome::get_last_coef() const
 {
-    return m_coeficients.back();
+    return m_coefficients.back();
 }
 
 vector<double> Polynome::get_coefs() const
 {
-    return m_coeficients;
+    return m_coefficients;
 }
 
-Polynome& Polynome::operator-=(const Polynome &p)
+void Polynome::add_coef(double c)
 {
-    int size_membre_a = m_coeficients.size();
-    int size_membre_b = p.m_coeficients.size();
+    m_coefficients.push_back(c);
+}
+
+double Polynome::value_for(double x) const
+{
+    double resultat = 0;
+
+    for(int i = 0; i < m_coefficients.size(); i++)
+        resultat += m_coefficients[i] * pow(x, i);
+    
+    return resultat;
+}
+
+Polynome& Polynome::operator+=(const Polynome &p)
+{
+    int size_membre_a = m_coefficients.size();
+    int size_membre_b = p.m_coefficients.size();
     int limite = (size_membre_a < size_membre_b ? size_membre_a : size_membre_b);
 
     for (int i = 0; i < limite; i++)
     {
-        m_coeficients[i] -= p.m_coeficients[i];
+        m_coefficients[i] += p.m_coefficients[i];
     }
 
     if (size_membre_a < size_membre_b)
     {
         for(int i = limite; i < size_membre_b; i++)
-            m_coeficients.push_back(-p.m_coeficients[i]);
+            m_coefficients.push_back(p.m_coefficients[i]);
     }
 
     return *this;
 }
 
-Polynome& Polynome::operator*=(const Polynome &p)
+Polynome& Polynome::operator-=(const Polynome &p)
 {
-    for(int i = 0; i < get_degre(); i++)
-    {
+    int size_membre_a = m_coefficients.size();
+    int size_membre_b = p.m_coefficients.size();
+    int limite = (size_membre_a < size_membre_b ? size_membre_a : size_membre_b);
 
+    for (int i = 0; i < limite; i++)
+    {
+        m_coefficients[i] -= p.m_coefficients[i];
     }
-    
+
+    if (size_membre_a < size_membre_b)
+    {
+        for(int i = limite; i < size_membre_b; i++)
+            m_coefficients.push_back(-p.m_coefficients[i]);
+    }
+
+    while(m_coefficients.back() == 0.)
+        m_coefficients.pop_back();
+
     return *this;
+}
+
+// Polynome& Polynome::operator*=(const Polynome &p)
+// {
+//     for(int i = 0; i <= p.get_degre(); i++)
+//     {
+//         Polynome tmp;
+//         tmp.decalage(i);
+//         for(int j = 0; j <= get_degre(); j++)
+//         {
+//             double d = p.m_coefficients[i] * m_coefficients[j];
+//             cout << " d : " << d << endl;
+//             tmp.add_coef(d);
+//             tmp.affiche_polynome("tmp :");
+//         }
+//         resultat += tmp;
+//     }
+
+//     return *this;
+// }
+
+void Polynome::decalage(int puissance, double coefficient = 1.0)
+{
+    if (puissance == 0)
+    {
+        for (int i = 0; i < m_coefficients.size(); i++)
+        {
+            if (m_coefficients[i] != 0)
+                m_coefficients[i] *= coefficient;
+        }
+    }
+    else if (puissance > 0)
+    {
+        for (int i = 0; i < puissance; i++)
+            m_coefficients.insert(m_coefficients.begin(), 0);
+
+        for (int i = 0; i < m_coefficients.size(); i++)
+            if (m_coefficients[i] != 0)
+                m_coefficients[i] *= coefficient;
+    }
 }
 
 string Polynome::to_s()
 {
     string resultat = "";
 
-    for (int i = m_coeficients.size() - 1; i > 0; i--)
+    for (int i = m_coefficients.size() - 1; i > 0; i--)
     {
-        if (m_coeficients[i] > 0)
+        if (m_coefficients[i] > 0)
             resultat += "+";
 
-        if (m_coeficients[i] != 0)
+        if (m_coefficients[i] != 0)
         {
-            resultat += m_coeficients[i];
+            resultat += m_coefficients[i];
             resultat += "x^";
             resultat += i;
             resultat += " ";
@@ -132,23 +213,26 @@ string Polynome::to_s()
 void Polynome::affiche_polynome()
 {
     // cout << to_s() << endl;
-    for (int i = m_coeficients.size() - 1; i >= 0; i--)
-        cout << m_coeficients[i] << " ";
+    for (int i = m_coefficients.size() - 1; i >= 0; i--)
+        cout << m_coefficients[i] << " ";
     cout << endl;
 }
 
-void Polynome::decalage(int puissance, double coeficient = 1.0)
+void Polynome::affiche_polynome(string message)
 {
-    if(puissance == 0)
-    {
-        for(int i = 0; i < m_coeficients.size(); i++)
-            m_coeficients[i] *= coeficient;
-    }
-    else if(puissance > 0)
-    {
-        for(int i = 0; i < puissance; i++)
-            m_coeficients.insert(0, 0);
-    }
+    // cout << to_s() << endl;
+    cout << message << " ";
+    for (int i = m_coefficients.size() - 1; i >= 0; i--)
+        cout << m_coefficients[i] << " ";
+    cout << endl;
+}
+
+Polynome operator+(Polynome const &p1, Polynome const &p2)
+{
+    Polynome copie(p1);
+    copie += p2;
+
+    return copie;
 }
 
 Polynome operator-(Polynome const &p1, Polynome const &p2)
@@ -161,22 +245,61 @@ Polynome operator-(Polynome const &p1, Polynome const &p2)
 
 Polynome operator*(Polynome const &p1, Polynome const &p2)
 {
-    Polynome copie(p1);
-    copie *= p2;
+    Polynome resultat;
 
-    return copie;
+    for(int i = 0; i <= p1.get_degre(); i++)
+    {
+        Polynome tmp;
+        tmp.decalage(i);
+        for(int j = 0; j <= p2.get_degre(); j++)
+        {
+            double d = p1.get_coefs()[i] * p2.get_coefs()[j];
+            tmp.add_coef(d);
+        }
+        resultat += tmp;
+    }
+
+    return resultat;
 }
 
 // Division euclidienne de P par M
-Polynome div_euclide(Polynome &P, Polynome &M)
+Polynome Polynome::div_euclide(const Polynome &P, const Polynome &M)
 {
-    Polynome Q(1), R(P);
-    int curseur = 1;
+    int i = 0;
 
-    while(R.get_degre() >= M.get_degre())
+    Polynome Q(1), R(P);
+    int curseur_R(R.get_degre()), curseur_M(M.get_degre()), curseur_Q(1);
+
+    Q.affiche_polynome("Q (début):");
+
+    while(R.get_degre() >= M.get_degre() && i < 3)
     {
-        Q.m_coeficients[i] = R.m_coeficients[i + 1] / M.m_coeficients[i];
-        R = R - Q * M;
+        while (M.m_coefficients[curseur_M] == 0 && curseur_M > 0)
+        {
+            curseur_M--;
+        }
+
+        while (R.m_coefficients[curseur_R] == 0 && curseur_R > 0)
+        {
+            curseur_R--;
+        }
+
+        Q.m_coefficients[curseur_Q] = R.m_coefficients[curseur_R--] / M.m_coefficients[curseur_M--];
+        Q.affiche_polynome("Q :");
+
+        Polynome multiplicateur(Q, curseur_Q--);
+        multiplicateur.affiche_polynome("multiplicateur :");
+
+        Polynome tmp = multiplicateur * M;
+        tmp.affiche_polynome("tmp :");
+
+        R -= tmp;
+        R.affiche_polynome("R :");
+
+
+        i++;
+
+        cout << endl;
     }
 
     return Q;

@@ -22,6 +22,7 @@ OpenGL:  $(OBJECTS)
 	$(CC) -c -O3 $(CFLAGS) $<
 		
 exe: OpenGL
+	mv *.o obj/
 	./OpenGL
 
 indenter :
