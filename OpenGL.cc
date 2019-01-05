@@ -16,9 +16,10 @@
 #define Pi 3.141592654
 
 #include <vector>
-#include "Point.h"
-#include "Segment.h"
 #include "FractionRationnelle.h"
+#include "PointMassique.h"
+#include "Casteljau.h"
+#include "Segment.h"
 #include "Dessin.h"
 
 using namespace std;
@@ -54,6 +55,8 @@ int main(int argc, char **argv)
     glutInitWindowSize(1000, 1000);
     glutCreateWindow("RQBC et conique.");
     /* Initialisation d'OpenGL */
+
+
     time_t now = time(0);
     tm * ltm = localtime(&now);
     if (ltm->tm_hour < 9 || ltm->tm_hour >= 17)
@@ -214,7 +217,16 @@ void init()
     Polynome denominateur(denom, 3);
 
     FractionRationnelle F(numerateur, denominateur);
-    
+
+    PointMassique A(1, 5, 10);
+    PointMassique B(2, 2, 1);
+    PointMassique C(6, 1, 1);
+    PointMassique D(13, 9, 10);
+
+    PointMassique X(J, 2);
+    PointMassique Y(O, -1/2);
+    PointMassique Z(I, 3);
+
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
         trace_point(I, 1., 0., 0., 10.);  //I
@@ -226,11 +238,20 @@ void init()
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
-        F.trace_assymptotes();
+        // F.trace_assymptotes();
+        A.trace(8, 0, 0, 255);
+        B.trace(8, 0, 0, 255);
+        C.trace(8, 0, 0, 255);
+        D.trace(8, 0, 0, 255);
+        trace_segment(A, B, 0, 0, 255, 2);
+        trace_segment(B, C, 0, 0, 255, 2);
+        trace_segment(C, D, 0, 0, 255, 2);
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-
+        // de_casteljau(X, Y, Z, 10);
+        for(double t = 0.001; t < 1.; t += 0.001)
+            de_casteljau(A, B, C, D, 10, t);
     glEndList();
 
     cout << "\nDone." << endl;
