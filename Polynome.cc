@@ -24,12 +24,16 @@ Polynome::Polynome(const Polynome &original)
 
 Polynome::Polynome(const Polynome &original, int degre_limite)
 {
-    int i = original.get_degre();
-    while(i > degre_limite)
-    {
+    // int i = original.get_degre();
+    // while(i > degre_limite)
+    // {
+    //     m_coefficients.push_back(0);
+    //     i--;
+    // }
+
+    for(int i = 0; i < degre_limite; i++)
         m_coefficients.push_back(0);
-        i--;
-    }
+
     m_coefficients.push_back(original.m_coefficients[degre_limite]);
 }
 
@@ -265,41 +269,14 @@ Polynome operator*(Polynome const &p1, Polynome const &p2)
 // Division euclidienne de P par M
 Polynome Polynome::div_euclide(const Polynome &P, const Polynome &M)
 {
-    int i = 0;
-
     Polynome Q(1), R(P);
-    int curseur_R(R.get_degre()), curseur_M(M.get_degre()), curseur_Q(1);
+    int curseur_Q(1);
 
-    Q.affiche_polynome("Q (début):");
-
-    while(R.get_degre() >= M.get_degre() && i < 3)
+    while (R.get_degre() >= M.get_degre())
     {
-        while (M.m_coefficients[curseur_M] == 0 && curseur_M > 0)
-        {
-            curseur_M--;
-        }
-
-        while (R.m_coefficients[curseur_R] == 0 && curseur_R > 0)
-        {
-            curseur_R--;
-        }
-
-        Q.m_coefficients[curseur_Q] = R.m_coefficients[curseur_R--] / M.m_coefficients[curseur_M--];
-        Q.affiche_polynome("Q :");
-
+        Q.m_coefficients[curseur_Q] = R.m_coefficients[R.get_degre()] / M.m_coefficients[M.get_degre()];
         Polynome multiplicateur(Q, curseur_Q--);
-        multiplicateur.affiche_polynome("multiplicateur :");
-
-        Polynome tmp = multiplicateur * M;
-        tmp.affiche_polynome("tmp :");
-
-        R -= tmp;
-        R.affiche_polynome("R :");
-
-
-        i++;
-
-        cout << endl;
+        R -= multiplicateur * M;
     }
 
     return Q;

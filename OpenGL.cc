@@ -207,16 +207,11 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    // double num[4] = {0, 2, 0, 1};
-    // double denom[3] = {1, 2, -3};
+    double num[2] = {2, -3};
+    double denom[3] = {-4, -11, 16};
 
-    // FractionRationnelle F(num, 4, denom, 3);
-    
-    double num[3] = {1, -1, -1};
-    double denom[2] = {2, -3};
-
-    Polynome numerateur(num, 3);
-    Polynome denominateur(denom, 2);
+    Polynome numerateur(num, 2);
+    Polynome denominateur(denom, 3);
 
     FractionRationnelle F(numerateur, denominateur);
     
@@ -236,14 +231,6 @@ void init()
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
 
-    glEndList();
-
-    glNewList(4, GL_COMPILE_AND_EXECUTE); //liste numero 4
-
-    glEndList();
-
-    glNewList(5, GL_COMPILE_AND_EXECUTE); //liste numero 5
-        
     glEndList();
 
     cout << "\nDone." << endl;
@@ -269,9 +256,6 @@ void affichage()
         glCallList(1); // appel de la liste numero 1
         glCallList(2);   // appel de la liste numero 2
         glCallList(3);   // appel de la liste numero 3
-        glCallList(4);   // appel de la liste numero 4
-        glCallList(5);   // appel de la liste numero 5
-        glCallList(6);   // appel de la liste numero 6
     glFlush();
     // On echange les buffers
     glutSwapBuffers();
