@@ -8,7 +8,7 @@ class PointMassique : public Point
   public:
 
     PointMassique();
-    PointMassique(Point p, double W);
+    PointMassique(const Point &p, double W);
     PointMassique(double X, double Y, double W);
 
     PointMassique &operator+=(PointMassique const &p);

@@ -1,4 +1,5 @@
 #include "PointMassique.h"
+#include <iostream>
 
 using namespace std;
 
@@ -11,14 +12,18 @@ PointMassique::PointMassique()
     w = 0;
 }
 
-PointMassique::PointMassique(Point p, double W) : Point(p), w(W)
+PointMassique::PointMassique(const Point& p, double W)
 {
-    
+    x = p.getX();
+    y = p.getY();
+    w = W;
 }
 
-PointMassique::PointMassique(double X, double Y, double W) : Point(X, Y), w(W)
+PointMassique::PointMassique(double X, double Y, double W)
 {
-
+    x = X;
+    y = Y;
+    w = W;
 }
 
 PointMassique &PointMassique::operator+=(PointMassique const &p)

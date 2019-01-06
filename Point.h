@@ -15,6 +15,9 @@ class Point
     Point();
     Point(double X, double Y);
 
+    Point &operator+=(Point const &p);
+    Point &operator*=(double scalaire);
+
     double getX() const;
     double getY() const;
 
@@ -26,5 +29,8 @@ class Point
     double x;
     double y;
 };
+
+Point operator+(Point const &p1, Point const &p2);
+Point operator*(Point const &p, double scalaire);
 
 #endif

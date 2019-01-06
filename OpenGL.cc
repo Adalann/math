@@ -18,6 +18,7 @@
 #include <vector>
 #include "FractionRationnelle.h"
 #include "PointMassique.h"
+#include "Bernstein.h"
 #include "Casteljau.h"
 #include "Segment.h"
 #include "Dessin.h"
@@ -218,14 +219,16 @@ void init()
 
     FractionRationnelle F(numerateur, denominateur);
 
-    PointMassique A(1, 5, 10);
-    PointMassique B(2, 2, 1);
-    PointMassique C(6, 1, 1);
-    PointMassique D(13, 9, 10);
+    Point A(1, 5);
+    Point B(2, 2);
+    Point C(6, 1);
+    Point D(13, 9);
 
-    PointMassique X(J, 2);
-    PointMassique Y(O, -1/2);
-    PointMassique Z(I, 3);
+    PointMassique X(A, 2);
+    PointMassique Y(B, 9);
+    PointMassique Z(C, 3);
+
+    bernstein(3, 3);
 
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
@@ -249,9 +252,8 @@ void init()
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        // de_casteljau(X, Y, Z, 10);
-        for(double t = 0.001; t < 1.; t += 0.001)
-            de_casteljau(A, B, C, D, 10, t);
+        de_casteljau(X, Y, Z);
+        // de_casteljau(I, O, J);
     glEndList();
 
     cout << "\nDone." << endl;

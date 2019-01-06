@@ -18,18 +18,18 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
 {
     m_numerateur = numerateur;
     m_denominateur = denominateur;
+
+
 }
 
-FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur)
+FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur) : FractionRationnelle(Polynome(numerateur), Polynome(denominateur))
 {
-    m_numerateur = Polynome(numerateur);
-    m_denominateur = Polynome(denominateur);
+
 }
 
-FractionRationnelle::FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom)
+FractionRationnelle::FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom) : FractionRationnelle(Polynome(num, taille_num), Polynome(denom, taille_denom))
 {
-    m_numerateur = Polynome(num, taille_num);
-    m_denominateur = Polynome(denom, taille_denom);
+
 }
 
 void FractionRationnelle::assymptote_h()

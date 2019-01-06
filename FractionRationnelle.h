@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Polynome.h"
+#include "PointMassique.h"
 
 class FractionRationnelle
 {
@@ -26,6 +27,10 @@ class FractionRationnelle
   private:
     Polynome m_numerateur;
     Polynome m_denominateur;
+    PointMassique m_p0;
+    PointMassique m_p1;
+    PointMassique m_p2;
+    PointMassique m_p3;
 };
 
 #endif
