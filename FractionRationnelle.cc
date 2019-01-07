@@ -1,5 +1,6 @@
 #include "FractionRationnelle.h"
 #include "Dessin.h"
+#include "Casteljau.h"
 #include <cmath>
 #include <vector>
 #include <iostream>
@@ -12,6 +13,7 @@ FractionRationnelle::FractionRationnelle()
 {
     m_numerateur = Polynome();
     m_denominateur = Polynome();
+    m_points_controle = vector<PointMassique>();
 }
 
 FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominateur)
@@ -19,7 +21,17 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     m_numerateur = numerateur;
     m_denominateur = denominateur;
 
+    double tmp_coef[] = {0, 1, 0};
+    Polynome X(tmp_coef, 3);
 
+    vector<double> coef_X = X.passage_base_bernstein();
+    vector<double> coef_Y = numerateur.passage_base_bernstein();
+    vector<double> coef_Z = denominateur.passage_base_bernstein();
+
+    for(int i = 0; i < coef_Y.size(); i++)
+    {
+        m_points_controle.push_back(PointMassique(coef_X[i], coef_Y[i], coef_Z[i]));
+    }
 }
 
 FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur) : FractionRationnelle(Polynome(numerateur), Polynome(denominateur))
@@ -67,10 +79,18 @@ void FractionRationnelle::trace_assymptotes()
     }
 }
 
+void FractionRationnelle::trace_courbe()
+{
+    de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
+}
+
 string FractionRationnelle::to_s()
 {
     string resultat = "";
-    resultat += m_numerateur.to_s() + " / " + m_denominateur.to_s();
+    // resultat += m_numerateur.to_s() + " / " + m_denominateur.to_s();
+
+    for(int i = 0; i < m_points_controle.size(); i++)
+        m_points_controle[i].display();
 
     return resultat;
 }

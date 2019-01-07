@@ -93,9 +93,9 @@ Point PointMassique::barycentre(const PointMassique &a, const PointMassique &b)
     return Point(x, y);
 }
 
-void display()
+void PointMassique::display() const
 {
-    
+    cout << "x : " << x << " y : " << y << " w : " << w << endl;
 }
 
 PointMassique operator+(PointMassique const &p1, PointMassique const &p2)

@@ -1,4 +1,5 @@
 #include "Polynome.h"
+#include "Bernstein.h"
 #include <iostream>
 #include <cmath>
 
@@ -88,6 +89,18 @@ int Polynome::solve(double &x1, double &x2) const
 double Polynome::get_last_coef() const
 {
     return m_coefficients.back();
+}
+
+double Polynome::get_coef_puissance(int d) const
+{
+    double c = 0;
+
+    if (d < m_coefficients.size())
+        c = m_coefficients[d];
+    else
+        cout << "Error, polynome degre = " << get_degre() << ", requested degre = " << d << endl;
+
+    return c;
 }
 
 vector<double> Polynome::get_coefs() const
@@ -280,4 +293,45 @@ Polynome Polynome::div_euclide(const Polynome &P, const Polynome &M)
     }
 
     return Q;
+}
+
+vector<double> Polynome::passage_base_bernstein() const
+{
+    vector<Polynome> polynomes_bernstein;
+    vector<double> coefs_base_bernstein;
+    Polynome p = bernstein(get_degre(), 0);
+    double coef(0);
+    double alpha(0), beta(0), gamma(0), delta(0);
+
+    coefs_base_bernstein.push_back(m_coefficients[0]);
+    alpha = m_coefficients[0];
+
+    polynomes_bernstein.push_back(p);
+
+    for (int i = 1; i <= get_degre(); i++)
+    {
+        p = bernstein(get_degre(), i);
+        polynomes_bernstein.push_back(p);
+
+        switch(i)
+        {
+            case 1:
+                coef = (m_coefficients[i] - polynomes_bernstein[0].get_coef_puissance(i) * alpha) / polynomes_bernstein[i].get_coef_puissance(i);
+                beta = coef;
+                break;
+            case 2:
+                coef = (m_coefficients[i] - polynomes_bernstein[0].get_coef_puissance(i) * alpha - polynomes_bernstein[1].get_coef_puissance(i) * beta) / polynomes_bernstein[i].get_coef_puissance(i);
+                gamma = coef;
+                break;
+            case 3:
+                coef = (m_coefficients[i] - polynomes_bernstein[0].get_coef_puissance(i) * alpha - polynomes_bernstein[1].get_coef_puissance(i) * beta - polynomes_bernstein[2].get_coef_puissance(i) * gamma) / polynomes_bernstein[i].get_coef_puissance(i);
+                delta = coef;
+                break;
+        }
+
+        coefs_base_bernstein.push_back(coef);
+    }
+    
+    return coefs_base_bernstein;
+    
 }

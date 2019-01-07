@@ -2,7 +2,7 @@
 CC        = g++
 HDR_PATHS = -I/usr/X11R6/include
 LIBS      = -lglut -lGLU -lGL -lm -L/usr/X11/lib -lXext #-lXmu -lXi -lX11 -g-std=c++98
-CFLAGS    = $(HDR_PATHS) -Wno-deprecated
+CFLAGS    = $(HDR_PATHS) -Wno-deprecated -std=c++11
 OBJECTS   = OpenGL.o Point.o PointMassique.o Segment.o FractionRationnelle.o Polynome.o Dessin.o Casteljau.o Bernstein.o
 
 ifeq ($(UNAME_S),Linux)

@@ -16,6 +16,8 @@ class PointMassique : public Point
 
     double getW() const;
 
+    void display() const;
+
     static Point barycentre(const PointMassique &a, const PointMassique &b);
 
   private:

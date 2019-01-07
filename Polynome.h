@@ -1,8 +1,9 @@
 #ifndef DEF_POLYNOME
 #define DEF_POLYNOME
 
-#include <vector>
 #include <string>
+#include <vector>
+
 
 class Polynome
 {
@@ -19,10 +20,12 @@ class Polynome
     int get_degre() const;
     int solve(double &x1, double &x2) const;
     double get_last_coef() const;
+    double get_coef_puissance(int d) const;
     void add_coef(double c);
     double value_for(double x) const;
     std::vector<double> get_coefs() const;
     static Polynome div_euclide(Polynome const &p1, Polynome const &p2);
+    std::vector<double> passage_base_bernstein() const;
 
     //Surchage d'opérateur
     Polynome &operator+=(const Polynome &p);

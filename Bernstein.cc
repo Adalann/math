@@ -3,38 +3,42 @@
 
 using namespace std;
 
-int factorielle(int i)
+class Polynome;
+
+int factorielle(int n)
 {
-    if (i == 0)
+    if (n > 1)
+        return n * factorielle(n - 1);
+    else
         return 1;
-    return i * factorielle(i - 1);
 }
 
 int coef_binomial(int n, int k)
 {
-    return factorielle(n) / (factorielle(k) * (factorielle(n - k)));
-}
+    if(n == 0 && k == 0)
+        return 1;
 
-double bernstein(int degre, int indice, double t)
-{
-    double resultat = coef_binomial(degre, indice) * pow(t, indice) * pow(1 - t, degre - indice);
-
-    return resultat;
+    return factorielle(n) / (factorielle(k) * factorielle(n - k));
 }
 
 Polynome bernstein(int degre, int indice)
 {
-    int coef_pascal[degre + 1][degre + 1];
-    for (int i = 0; i <= degre - indice; i++)
+    Polynome b;
+    int j = 0;
+
+    for(int i = 0; i <= degre; i++)
     {
-        coef_pascal[i][0] = 1;
-        for(int j = 1; j < i; j++)
+        if(i < indice)
+            b.add_coef(0);
+        else
         {
-            coef_pascal[i][0] = coef_pascal[i - 1][j] + coef_pascal[i - 1][j - 1];
-            cout << coef_pascal[i][0] << " ";
+            int multiplicateur = (j++ % 2 == 0 ? 1 : -1);
+            if (indice != 0 && indice != degre)
+                multiplicateur *= degre;
+                
+            b.add_coef(multiplicateur * coef_binomial(degre - indice, degre - i));
         }
-        cout << endl;
     }
 
-    return Polynome();
+    return Polynome(b);
 }

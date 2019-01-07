@@ -20,6 +20,8 @@ class FractionRationnelle
     double get_denominateur() const;
     void assymptote_h();
     void trace_assymptotes();
+    void trace_courbe();
+    void affiche_points_controles() const;
 
     // Méthodes d'affichage
     std::string to_s();
@@ -27,10 +29,7 @@ class FractionRationnelle
   private:
     Polynome m_numerateur;
     Polynome m_denominateur;
-    PointMassique m_p0;
-    PointMassique m_p1;
-    PointMassique m_p2;
-    PointMassique m_p3;
+    std::vector<PointMassique> m_points_controle;
 };
 
 #endif
