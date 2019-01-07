@@ -20,17 +20,19 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
 {
     m_numerateur = numerateur;
     m_denominateur = denominateur;
+    m_points_controle = vector<PointMassique>();
 
-    double tmp_coef[] = {0, 1, 0};
-    Polynome X(tmp_coef, 3);
+    double tmp_coef[] = {0, 0, 1, 0};
+    Polynome X(tmp_coef, 4);
 
     vector<double> coef_X = X.passage_base_bernstein();
     vector<double> coef_Y = numerateur.passage_base_bernstein();
-    vector<double> coef_Z = denominateur.passage_base_bernstein();
+    vector<double> coef_W = denominateur.passage_base_bernstein();
+    cout << coef_X.size() << " " << coef_Y.size() << " " << coef_W.size() << endl;
 
     for(int i = 0; i < coef_Y.size(); i++)
     {
-        m_points_controle.push_back(PointMassique(coef_X[i], coef_Y[i], coef_Z[i]));
+        m_points_controle.push_back(PointMassique(coef_X[i], coef_Y[i], coef_W[i]));
     }
 }
 
@@ -44,12 +46,12 @@ FractionRationnelle::FractionRationnelle(double num[], size_t taille_num, double
 
 }
 
-void FractionRationnelle::assymptote_h()
+void FractionRationnelle::assymptote_h() const
 {
     double res = 0;
 }
 
-void FractionRationnelle::trace_assymptotes()
+void FractionRationnelle::trace_assymptotes() const
 {
     // Assymptote verticale(s)
     double x1(0), x2(0);
@@ -79,12 +81,15 @@ void FractionRationnelle::trace_assymptotes()
     }
 }
 
-void FractionRationnelle::trace_courbe()
+void FractionRationnelle::trace_courbe() const
 {
+    // trace_point(m_points_controle[0], 0, 255, 0, 5);
+    // trace_point(m_points_controle[1], 0, 255, 0, 5);
+    // trace_point(m_points_controle[2], 0, 255, 0, 5);
     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
 }
 
-string FractionRationnelle::to_s()
+string FractionRationnelle::to_s() const
 {
     string resultat = "";
     // resultat += m_numerateur.to_s() + " / " + m_denominateur.to_s();

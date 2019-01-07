@@ -166,25 +166,6 @@ Polynome& Polynome::operator-=(const Polynome &p)
     return *this;
 }
 
-// Polynome& Polynome::operator*=(const Polynome &p)
-// {
-//     for(int i = 0; i <= p.get_degre(); i++)
-//     {
-//         Polynome tmp;
-//         tmp.decalage(i);
-//         for(int j = 0; j <= get_degre(); j++)
-//         {
-//             double d = p.m_coefficients[i] * m_coefficients[j];
-//             cout << " d : " << d << endl;
-//             tmp.add_coef(d);
-//             tmp.affiche_polynome("tmp :");
-//         }
-//         resultat += tmp;
-//     }
-
-//     return *this;
-// }
-
 void Polynome::decalage(int puissance, double coefficient = 1.0)
 {
     if (puissance == 0)
@@ -331,7 +312,18 @@ vector<double> Polynome::passage_base_bernstein() const
 
         coefs_base_bernstein.push_back(coef);
     }
+
+    // reverse_vector(coefs_base_bernstein);
     
     return coefs_base_bernstein;
-    
 }
+
+// void reverse_vector(vector<double> &v)
+// {
+//     for(int i = 0; i < v.size() / 2; i++)
+//     {
+//         double tmp = v[i];
+//         v[i] = v[v.size() - 1 - i];
+//         v[v.size() - 1 - i] = tmp;
+//     }
+// }

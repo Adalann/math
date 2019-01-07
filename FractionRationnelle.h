@@ -18,13 +18,13 @@ class FractionRationnelle
     // Méthodes
     double get_numerateur() const;
     double get_denominateur() const;
-    void assymptote_h();
-    void trace_assymptotes();
-    void trace_courbe();
+    void assymptote_h() const;
+    void trace_assymptotes() const;
+    void trace_courbe() const;
     void affiche_points_controles() const;
 
     // Méthodes d'affichage
-    std::string to_s();
+    std::string to_s() const;
 
   private:
     Polynome m_numerateur;
