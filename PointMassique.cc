@@ -57,16 +57,17 @@ PointMassique &PointMassique::operator+=(PointMassique const &p)
 
 PointMassique &PointMassique::operator*=(double scalaire)
 {
-    if(scalaire == 0 && w != 0)
+
+    if (scalaire != 0 && w == 0)
+    {
+        x *= scalaire;
+        y *= scalaire;
+    }
+    else if(scalaire == 0 && w != 0)
     {
         x = 0;
         y = 0;
         w = 0;
-    }
-    else if(scalaire != 0 && w == 0)
-    {
-        x *= scalaire;
-        y *= scalaire;
     }
     else if (scalaire != 0)
         w *= scalaire;

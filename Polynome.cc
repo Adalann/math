@@ -316,6 +316,7 @@ vector<double> Polynome::passage_base_bernstein() const
     }
 
     // reverse_vector(coefs_base_bernstein);
+    cout << endl;
     
     return coefs_base_bernstein;
 }

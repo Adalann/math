@@ -21,22 +21,35 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     m_numerateur = numerateur;
     m_denominateur = denominateur;
     m_points_controle = vector<PointMassique>();
+    vector<vector<double>> coefs;
 
-    double tmp_coef[] = {0, 0, 1, 0};
-    Polynome X(tmp_coef, 4);
-    // Polynome X(denominateur);
-    // X.decalage(1, 1);
-    X.affiche_polynome("X :");
+    int degre_max = (m_numerateur.get_degre() >= m_denominateur.get_degre() ? m_numerateur.get_degre() : m_denominateur.get_degre());
 
-    vector<double> coef_X = X.passage_base_bernstein();
-    vector<double> coef_Y = numerateur.passage_base_bernstein();
-    vector<double> coef_W = denominateur.passage_base_bernstein();
-    cout << coef_X.size() << " " << coef_Y.size() << " " << coef_W.size() << endl;
-
-    for(int i = 0; i < coef_W.size(); i++)
+    Polynome X = Polynome();
+    for (int i = 0; i <= degre_max; i++)
     {
-        m_points_controle.push_back(PointMassique(coef_X[i], coef_Y[i], coef_W[i]));
+        double c = (i == 1 ? 1. : 0.);
+        X.add_coef(c);
     }
+
+    X = X * m_denominateur;
+
+    Polynome Y(numerateur);
+    while(Y.get_degre() < degre_max)
+        Y.add_coef(0.);
+
+    Polynome Z(denominateur);
+    while(Z.get_degre() < degre_max)
+        Z.add_coef(0.);
+
+    coefs.push_back(X.passage_base_bernstein());
+    coefs.push_back(Y.passage_base_bernstein());
+    coefs.push_back(Z.passage_base_bernstein());
+
+    cout << coefs.size() << endl;
+
+    for(int i = 0; i <= degre_max; i++)
+        m_points_controle.push_back(PointMassique(coefs[0][i], coefs[1][i], coefs[2][i]));
 }
 
 FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur) : FractionRationnelle(Polynome(numerateur), Polynome(denominateur))
@@ -86,12 +99,16 @@ void FractionRationnelle::trace_assymptotes() const
 
 void FractionRationnelle::trace_courbe() const
 {
-    trace_point(m_points_controle[0], 0, 255, 0, 5);
-    trace_point(m_points_controle[1], 0, 255, 0, 5);
-    trace_point(m_points_controle[2], 0, 255, 0, 5);
+    for(int i = 0; i < m_points_controle.size(); i++)
+    {
+        trace_point(m_points_controle[i], 0., 0., 0., 5);
+        // if(i < m_points_controle.size() - 1)
+            // trace_segment(m_points_controle[i], m_points_controle[i + 1], 0., 255., 100., 2.);
+    }
+        
 
-    trace_segment(m_points_controle[0], m_points_controle[1], 0, 255, 0, 1);
-    trace_segment(m_points_controle[1], m_points_controle[2], 0, 255, 0, 1);
+    // for(double t = 0.001; t < 1; t += 0.001)
+    //     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2], 0, t);
 
     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
 }

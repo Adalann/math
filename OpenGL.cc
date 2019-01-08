@@ -211,10 +211,10 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    double num[3] = {2, 0, -1};
-    double denom[3] = {1, 2, -3};
+    double num[] = {1, -4, -11, 16};
+    double denom[] = {1, 2, -3};
 
-    Polynome numerateur(num, 3);
+    Polynome numerateur(num, 4);
     Polynome denominateur(denom, 3);
 
     FractionRationnelle F(numerateur, denominateur);
