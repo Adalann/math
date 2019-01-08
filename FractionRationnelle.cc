@@ -46,8 +46,6 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     coefs.push_back(Y.passage_base_bernstein());
     coefs.push_back(Z.passage_base_bernstein());
 
-    cout << coefs.size() << endl;
-
     for(int i = 0; i <= degre_max; i++)
         m_points_controle.push_back(PointMassique(coefs[0][i], coefs[1][i], coefs[2][i]));
 }
@@ -97,6 +95,16 @@ void FractionRationnelle::trace_assymptotes() const
     }
 }
 
+// double FractionRationnelle::w_f(double t) const
+// {
+//     double res = 0;
+
+//     for(int i = 0; i < m_points_controle.size(); i++)
+//     {
+
+//     }
+// }
+
 void FractionRationnelle::trace_courbe() const
 {
     for(int i = 0; i < m_points_controle.size(); i++)
@@ -110,7 +118,11 @@ void FractionRationnelle::trace_courbe() const
     // for(double t = 0.001; t < 1; t += 0.001)
     //     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2], 0, t);
 
-    de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
+    // de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
+    int degre_max = (m_numerateur.get_degre() >= m_denominateur.get_degre() ? m_numerateur.get_degre() : m_denominateur.get_degre());
+
+    // for(int i = 0; i < degre_max; i++)
+
 }
 
 string FractionRationnelle::to_s() const
@@ -123,3 +135,5 @@ string FractionRationnelle::to_s() const
 
     return resultat;
 }
+
+

@@ -211,15 +211,20 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    double num[] = {1, -4, -11, 16};
+    double num[] = {2, 0, -1};
     double denom[] = {1, 2, -3};
 
-    Polynome numerateur(num, 4);
+    Polynome numerateur(num, 3);
     Polynome denominateur(denom, 3);
 
     FractionRationnelle F(numerateur, denominateur);
 
-    cout << F.to_s() << endl;
+    // PointMassique A(0, 0, 1);
+    // PointMassique B(2, -1, 0.);
+    // PointMassique C(2, -2, 1);
+    // PointMassique D(6, 1, 1);
+
+    // cout << F.to_s() << endl;
 
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
@@ -237,6 +242,13 @@ void init()
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
         F.trace_courbe();
+        // trace_point(A, 0, 0,0, 5);
+        // trace_point(B, 0, 0,0, 5);
+        // trace_point(C, 0, 0,0, 5);
+        // trace_point(D, 0, 0,0, 5);
+
+        // for(double t = 0.001; t < 1; t += 0.001)X
+            // de_casteljau(A, B, C, D);
     glEndList();
 
     cout << "\nDone." << endl;

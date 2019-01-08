@@ -53,6 +53,7 @@ void Point::trace(double taille, double r, double g, double b) const
     glBegin(GL_POINTS);   // on trace un point
     glVertex2f(x, y);     // coordonnees du point
     glEnd();
+
 }
 
 Point operator+(Point const &p1, Point const &p2)

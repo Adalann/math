@@ -23,6 +23,8 @@ class FractionRationnelle
     void trace_courbe() const;
     void affiche_points_controles() const;
 
+    double FractionRationnelle::w_f(double t) const;
+
     // Méthodes d'affichage
     std::string to_s() const;
 
