@@ -3,8 +3,6 @@
 
 using namespace std;
 
-int nb_point = 0;
-
 void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int reccursion_level, double t, int reccursion_cout)
 {
     Point N0;
@@ -47,7 +45,6 @@ void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point
     C = (M0 * (1 - t)) + (M1 * t);
 
     C.trace(2);
-    C.print();
 
     if (reccursion_cout != reccursion_level)
     {
@@ -98,7 +95,6 @@ void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointM
     C = (M0 * (1 - t)) + (M1 * t);
 
     C.trace(2);
-    C.print();
 
     if(reccursion_cout != reccursion_level)
     {

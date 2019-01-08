@@ -24,13 +24,16 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
 
     double tmp_coef[] = {0, 0, 1, 0};
     Polynome X(tmp_coef, 4);
+    // Polynome X(denominateur);
+    // X.decalage(1, 1);
+    X.affiche_polynome("X :");
 
     vector<double> coef_X = X.passage_base_bernstein();
     vector<double> coef_Y = numerateur.passage_base_bernstein();
     vector<double> coef_W = denominateur.passage_base_bernstein();
     cout << coef_X.size() << " " << coef_Y.size() << " " << coef_W.size() << endl;
 
-    for(int i = 0; i < coef_Y.size(); i++)
+    for(int i = 0; i < coef_W.size(); i++)
     {
         m_points_controle.push_back(PointMassique(coef_X[i], coef_Y[i], coef_W[i]));
     }
@@ -53,7 +56,7 @@ void FractionRationnelle::assymptote_h() const
 
 void FractionRationnelle::trace_assymptotes() const
 {
-    // Assymptote verticale(s)
+    // Assymptote(s) verticale(s)
     double x1(0), x2(0);
     int nb_racine = m_denominateur.solve(x1, x2);
     if(nb_racine == 1)
@@ -83,9 +86,13 @@ void FractionRationnelle::trace_assymptotes() const
 
 void FractionRationnelle::trace_courbe() const
 {
-    // trace_point(m_points_controle[0], 0, 255, 0, 5);
-    // trace_point(m_points_controle[1], 0, 255, 0, 5);
-    // trace_point(m_points_controle[2], 0, 255, 0, 5);
+    trace_point(m_points_controle[0], 0, 255, 0, 5);
+    trace_point(m_points_controle[1], 0, 255, 0, 5);
+    trace_point(m_points_controle[2], 0, 255, 0, 5);
+
+    trace_segment(m_points_controle[0], m_points_controle[1], 0, 255, 0, 1);
+    trace_segment(m_points_controle[1], m_points_controle[2], 0, 255, 0, 1);
+
     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
 }
 

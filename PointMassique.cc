@@ -40,8 +40,8 @@ PointMassique &PointMassique::operator+=(PointMassique const &p)
     }
     else if (w + p.w == 0)
     {
-        x -= (p.x * w);
-        y -= (p.y * w);
+        x = (x - p.x) * w;
+        y = (y - p.y) * w;
         w = 0;
     }
     else if (w + p.w != 0)
@@ -57,9 +57,7 @@ PointMassique &PointMassique::operator+=(PointMassique const &p)
 
 PointMassique &PointMassique::operator*=(double scalaire)
 {
-    if(scalaire != 0)
-        w *= scalaire;
-    else if(scalaire == 0 && w != 0)
+    if(scalaire == 0 && w != 0)
     {
         x = 0;
         y = 0;
@@ -70,6 +68,8 @@ PointMassique &PointMassique::operator*=(double scalaire)
         x *= scalaire;
         y *= scalaire;
     }
+    else if (scalaire != 0)
+        w *= scalaire;
 
     return *this;
 }
@@ -87,7 +87,7 @@ Point PointMassique::barycentre(const PointMassique &a, const PointMassique &b)
     else
     {
         x = (a.x * a.w + b.x * b.w) / (a.w + b.w);
-        y = (a.w * a.w + b.w * b.w) / (a.w + b.w);
+        y = (a.y * a.w + b.y * b.w) / (a.w + b.w);
     }
 
     return Point(x, y);

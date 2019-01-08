@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// void reverse_vector(vector<double> &v);
+
 Polynome::Polynome()
 {
     m_coefficients = vector<double>();
@@ -318,12 +320,12 @@ vector<double> Polynome::passage_base_bernstein() const
     return coefs_base_bernstein;
 }
 
-// void reverse_vector(vector<double> &v)
-// {
-//     for(int i = 0; i < v.size() / 2; i++)
-//     {
-//         double tmp = v[i];
-//         v[i] = v[v.size() - 1 - i];
-//         v[v.size() - 1 - i] = tmp;
-//     }
-// }
+void reverse_vector(vector<double> &v)
+{
+    for(int i = 0; i < v.size() / 2; i++)
+    {
+        double tmp = v[i];
+        v[i] = v[v.size() - 1 - i];
+        v[v.size() - 1 - i] = tmp;
+    }
+}
