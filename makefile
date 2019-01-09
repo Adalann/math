@@ -20,7 +20,7 @@ OpenGL:  $(OBJECTS)
 
 .cc.o:
 	$(CC) -c -O3 $(CFLAGS) $<
-		
+
 exe: OpenGL
 	mv *.o obj/
 	./OpenGL

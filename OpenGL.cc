@@ -219,11 +219,28 @@ void init()
 
     FractionRationnelle F(numerateur, denominateur);
 
-    // PointMassique A(0, 0, 1);
-    // PointMassique B(2, -1, 0.);
-    // PointMassique C(2, -2, 1);
-    // PointMassique D(6, 1, 1);
+    vector<double> n;
+    vector<double> d;
 
+    n.push_back(-1);
+    n.push_back(0);
+    n.push_back(2);
+
+    d.push_back(-3);
+    d.push_back(2);
+    d.push_back(1);
+
+    // PointMassique A(0, 0.333333, -3);
+    // PointMassique B(0.428571, 0.428571, -2.333333);
+    // PointMassique C(1, 0.25, -1.3333);
+    // PointMassique D(0, 1, 0);
+    PointMassique A(0, -1, -3);
+    PointMassique B(-1, -1, -2.333333);
+    PointMassique C(-1.33, -0.3333, -1.33333);
+    PointMassique D(0, 1, 0);
+    FractionRationnelle T(A, B, C, D);
+    T.m_numerateur = n;
+    T.m_denominateur = d;
     // cout << F.to_s() << endl;
 
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
@@ -238,17 +255,19 @@ void init()
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes();
+        // T.trace_assymptotes();
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        F.trace_courbe();
+        // F.trace_courbe();
+        // T.trace_courbe();
         // trace_point(A, 0, 0,0, 5);
         // trace_point(B, 0, 0,0, 5);
         // trace_point(C, 0, 0,0, 5);
         // trace_point(D, 0, 0,0, 5);
 
         // for(double t = 0.001; t < 1; t += 0.001)X
-            // de_casteljau(A, B, C, D);
+            de_casteljau(A, B, C, D);
     glEndList();
 
     cout << "\nDone." << endl;

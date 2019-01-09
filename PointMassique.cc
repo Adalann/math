@@ -3,8 +3,6 @@
 
 using namespace std;
 
-class Point;
-
 PointMassique::PointMassique()
 {
     x = 0;
@@ -97,6 +95,11 @@ Point PointMassique::barycentre(const PointMassique &a, const PointMassique &b)
 void PointMassique::display() const
 {
     cout << "x : " << x << " y : " << y << " w : " << w << endl;
+}
+
+double PointMassique::getW() const
+{
+    return w;
 }
 
 PointMassique operator+(PointMassique const &p1, PointMassique const &p2)

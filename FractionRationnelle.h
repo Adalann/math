@@ -11,6 +11,7 @@ class FractionRationnelle
   public:
     // Constructeurs
     FractionRationnelle();
+    FractionRationnelle(PointMassique p1, PointMassique p2, PointMassique p3, PointMassique p4);
     FractionRationnelle(Polynome numerateur, Polynome denominateur);
     FractionRationnelle(const std::vector<double> &numerateur, const std::vector<double> &denominateur);
     FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom);
@@ -23,12 +24,10 @@ class FractionRationnelle
     void trace_courbe() const;
     void affiche_points_controles() const;
 
-    double FractionRationnelle::w_f(double t) const;
-
     // Méthodes d'affichage
     std::string to_s() const;
 
-  private:
+  public:
     Polynome m_numerateur;
     Polynome m_denominateur;
     std::vector<PointMassique> m_points_controle;

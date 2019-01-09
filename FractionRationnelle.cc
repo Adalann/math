@@ -1,9 +1,12 @@
 #include "FractionRationnelle.h"
 #include "Dessin.h"
 #include "Casteljau.h"
+#include "Bernstein.h"
 #include <cmath>
 #include <vector>
 #include <iostream>
+
+#define PAS 0.0001
 
 class Polynome;
 
@@ -16,6 +19,14 @@ FractionRationnelle::FractionRationnelle()
     m_points_controle = vector<PointMassique>();
 }
 
+FractionRationnelle::FractionRationnelle(PointMassique p1, PointMassique p2, PointMassique p3, PointMassique p4) : FractionRationnelle()
+{
+    m_points_controle.push_back(p1);
+    m_points_controle.push_back(p2);
+    m_points_controle.push_back(p3);
+    m_points_controle.push_back(p4);
+}
+
 FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominateur)
 {
     m_numerateur = numerateur;
@@ -23,16 +34,19 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     m_points_controle = vector<PointMassique>();
     vector<vector<double>> coefs;
 
-    int degre_max = (m_numerateur.get_degre() >= m_denominateur.get_degre() ? m_numerateur.get_degre() : m_denominateur.get_degre());
-
     Polynome X = Polynome();
-    for (int i = 0; i <= degre_max; i++)
+    for (int i = 0; i < 2; i++)
     {
         double c = (i == 1 ? 1. : 0.);
         X.add_coef(c);
     }
-
+    X.affiche_polynome("X avant :");
     X = X * m_denominateur;
+    m_denominateur.affiche_polynome("Z :");
+    X.affiche_polynome("X apres:");
+
+    int degre_max = (m_numerateur.get_degre() >= m_denominateur.get_degre() ? m_numerateur.get_degre() : m_denominateur.get_degre());
+    degre_max = (X.get_degre() >= degre_max ? X.get_degre() : degre_max);
 
     Polynome Y(numerateur);
     while(Y.get_degre() < degre_max)
@@ -47,7 +61,11 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     coefs.push_back(Z.passage_base_bernstein());
 
     for(int i = 0; i <= degre_max; i++)
-        m_points_controle.push_back(PointMassique(coefs[0][i], coefs[1][i], coefs[2][i]));
+    {
+        PointMassique p(PointMassique(coefs[0][i], coefs[1][i], coefs[2][i]));
+        m_points_controle.push_back(p);
+        p.display();
+    }
 }
 
 FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur) : FractionRationnelle(Polynome(numerateur), Polynome(denominateur))
@@ -107,22 +125,46 @@ void FractionRationnelle::trace_assymptotes() const
 
 void FractionRationnelle::trace_courbe() const
 {
+    
     for(int i = 0; i < m_points_controle.size(); i++)
     {
         trace_point(m_points_controle[i], 0., 0., 0., 5);
-        // if(i < m_points_controle.size() - 1)
-            // trace_segment(m_points_controle[i], m_points_controle[i + 1], 0., 255., 100., 2.);
+        if(i < m_points_controle.size() - 1)
+            trace_segment(m_points_controle[i], m_points_controle[i + 1], 0., 255., 100., 2.);
     }
-        
-
-    // for(double t = 0.001; t < 1; t += 0.001)
-    //     de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2], 0, t);
 
     // de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
     int degre_max = (m_numerateur.get_degre() >= m_denominateur.get_degre() ? m_numerateur.get_degre() : m_denominateur.get_degre());
+    degre_max = (degre_max >= m_denominateur.get_degre() + 1 ? degre_max : m_denominateur.get_degre() + 1);
 
-    // for(int i = 0; i < degre_max; i++)
+    for (double t = PAS; t < 1; t += PAS)
+    {
+        double x(0), y(0);
 
+        for (int i = 0; i < m_points_controle.size(); i++)
+        {
+            double B = bernstein(degre_max, i).value_for(t);
+            if (m_points_controle[i].getW() != 0)
+            {
+                x += (m_points_controle[i].getW() * B * m_points_controle[i].getX());
+                y += (m_points_controle[i].getW() * B * m_points_controle[i].getY());
+            }
+            else
+            {
+                x += (B * m_points_controle[i].getX());
+                y += (B * m_points_controle[i].getY());
+            }
+        }
+
+        double diviseur(1);
+        for (int i = 0; i < m_points_controle.size(); i++)
+            diviseur += bernstein(degre_max, i).value_for(t) * m_points_controle[i].getW();
+
+        x /= diviseur;
+        y /= diviseur;
+
+        trace_point(x, y, 0, 0., 255., 2);
+    }
 }
 
 string FractionRationnelle::to_s() const
