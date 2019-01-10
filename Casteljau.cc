@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int reccursion_level, double t, int reccursion_cout)
+void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int recursion_level, double t, int recursion_cout)
 {
     Point N0;
     Point N1;
@@ -17,14 +17,14 @@ void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int reccurs
 
     C.trace(2);
 
-    if(reccursion_cout != reccursion_level)
+    if(recursion_cout != recursion_level)
     {
-        de_casteljau(P0, N0, C, reccursion_level, t, reccursion_cout + 1);
-        de_casteljau(C, N1, P2, reccursion_level, t, reccursion_cout + 1);
+        de_casteljau(P0, N0, C, recursion_level, t, recursion_cout + 1);
+        de_casteljau(C, N1, P2, recursion_level, t, recursion_cout + 1);
     }
 }
 
-void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point &P3, int reccursion_level, double t, int reccursion_cout)
+void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point &P3, int recursion_level, double t, int recursion_cout)
 {
     Point N0;
     Point N1;
@@ -46,14 +46,14 @@ void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point
 
     C.trace(2);
 
-    if (reccursion_cout != reccursion_level)
+    if (recursion_cout != recursion_level)
     {
-        de_casteljau(P0, N0, M0, C, reccursion_level, t, reccursion_cout + 1);
-        de_casteljau(C, M1, N2, P3, reccursion_level, t, reccursion_cout + 1);
+        de_casteljau(P0, N0, M0, C, recursion_level, t, recursion_cout + 1);
+        de_casteljau(C, M1, N2, P3, recursion_level, t, recursion_cout + 1);
     }
 }
 
-void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, int reccursion_level, double t, int reccursion_cout)
+void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, int recursion_level, double t, int recursion_cout)
 {
     PointMassique N0;
     PointMassique N1;
@@ -67,14 +67,14 @@ void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointM
 
     C.trace(2);
 
-    if(reccursion_cout != reccursion_level)
+    if(recursion_cout != recursion_level)
     {
-        de_casteljau(P0, N0, C, reccursion_level, t, reccursion_cout + 1);
-        de_casteljau(C, N1, P2, reccursion_level, t, reccursion_cout + 1);
+        de_casteljau(P0, N0, C, recursion_level, t, recursion_cout + 1);
+        de_casteljau(C, N1, P2, recursion_level, t, recursion_cout + 1);
     }
 }
 
-void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, const PointMassique &P3, int reccursion_level, double t, int reccursion_cout)
+void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, const PointMassique &P3, int recursion_level, double t, int recursion_cout)
 {
     PointMassique N0;
     PointMassique N1;
@@ -96,9 +96,9 @@ void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointM
 
     C.trace(2);
 
-    if(reccursion_cout != reccursion_level)
+    if(recursion_cout != recursion_level)
     {
-        de_casteljau(P0, N0, M0, C, reccursion_level, t, reccursion_cout + 1);
-        de_casteljau(C, M1, N2, P3, reccursion_level, t, reccursion_cout + 1);
+        de_casteljau(P0, N0, M0, C, recursion_level, t, recursion_cout + 1);
+        de_casteljau(C, M1, N2, P3, recursion_level, t, recursion_cout + 1);
     }
 }

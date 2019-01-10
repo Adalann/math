@@ -54,9 +54,8 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(1000, 1000);
-    glutCreateWindow("RQBC et conique.");
+    glutCreateWindow("Lanvin Martos");
     /* Initialisation d'OpenGL */
-
 
     time_t now = time(0);
     tm * ltm = localtime(&now);
@@ -186,7 +185,7 @@ void mousemotion(int x, int y)
         angley = angley + (y - yRightOld);
         glutPostRedisplay(); /* on demande un rafraichissement de l'affichage */
         xRightOld = x;       /* sauvegarde des valeurs courante de le position de la souris */
-        xRightOld = y;
+        yRightOld = y;
     }
     else if (pressLeft)
     {
@@ -197,7 +196,6 @@ void mousemotion(int x, int y)
         yLeftOld = y;
     } 
 }
-
 
 /****************************************************************
  **                                                            **
@@ -211,17 +209,14 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    // double num[] = {2, 0, -1};
+    // double num[] = {1, -4, -11, 16};
     // double denom[] = {1, 2, -3};
 
-    // Polynome numerateur(num, 3);
-    // Polynome denominateur(denom, 3);
+    double num[] = {5, -3, 0};
+    double denom[] = {1, -9};
 
-    double num[] = {1, 0};
-    double denom[] = {1};
-
-    Polynome numerateur(num, 2);
-    Polynome denominateur(denom, 1);
+    Polynome numerateur(num, 3);
+    Polynome denominateur(denom, 2);
 
     FractionRationnelle F(numerateur, denominateur);
 
@@ -230,17 +225,18 @@ void init()
         trace_point(I, 1., 0., 0., 10.);  //I
         trace_point(J, 0., 0.5, 0., 10.); //J
         trace_segment(O, I, 1.0, 0.0, 1.0, 2.0);  // on trace [OI]
-        trace_segment(O, J, 1.0, 0.50, 0.0, 2.0); // on trace [OJ]
+        trace_segment(O, J, 1.0, 0.5, 0.0, 2.0); // on trace [OJ]
         trace_segment(abscisse, 0., 0., 0., 0.5); // on trace l'axe des abcsisse
         trace_segment(ordonnee, 0., 0., 0., 0.5); // on trace l'axe des ordonnees
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes();
+        F.trace_courbe();
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        F.trace_courbe();
+        
     glEndList();
 
     cout << "\nDone." << endl;

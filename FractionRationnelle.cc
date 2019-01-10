@@ -6,8 +6,6 @@
 #include <vector>
 #include <iostream>
 
-#define PAS 0.0001
-
 class Polynome;
 
 using namespace std;
@@ -32,7 +30,6 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     m_numerateur = numerateur;
     m_denominateur = denominateur;
     m_points_controle = vector<PointMassique>();
-    vector<vector<double>> coefs;
 
     Polynome tQ = Polynome();
     for (int i = 0; i < 2; i++)
@@ -77,11 +74,6 @@ FractionRationnelle::FractionRationnelle(double num[], size_t taille_num, double
 
 }
 
-void FractionRationnelle::assymptote_h() const
-{
-    double res = 0;
-}
-
 void FractionRationnelle::trace_assymptotes() const
 {
     // Assymptote(s) verticale(s)
@@ -103,7 +95,7 @@ void FractionRationnelle::trace_assymptotes() const
     }
 
     // Assymptote oblique
-    if(m_numerateur.get_degre() == m_denominateur.get_degre() + 1)
+    if (m_numerateur.get_degre() == m_denominateur.get_degre() + 1)
     {
         Polynome oblique = Polynome::div_euclide(m_numerateur, m_denominateur);
         Point a(-100000, oblique.value_for(-100000));
@@ -112,25 +104,17 @@ void FractionRationnelle::trace_assymptotes() const
     }
 }
 
-// double FractionRationnelle::w_f(double t) const
-// {
-//     double res = 0;
-
-//     for(int i = 0; i < m_points_controle.size(); i++)
-//     {
-
-//     }
-// }
-
 void FractionRationnelle::trace_courbe() const
 {
-    de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
+    if(m_points_controle.size() == 3)
+        de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
+    else if(m_points_controle.size() == 4)
+        de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2], m_points_controle[3]);
 }
 
 string FractionRationnelle::to_s() const
 {
     string resultat = "";
-    // resultat += m_numerateur.to_s() + " / " + m_denominateur.to_s();
 
     for(int i = 0; i < m_points_controle.size(); i++)
         m_points_controle[i].display();
