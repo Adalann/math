@@ -211,37 +211,19 @@ void init()
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
 
-    double num[] = {2, 0, -1};
-    double denom[] = {1, 2, -3};
+    // double num[] = {2, 0, -1};
+    // double denom[] = {1, 2, -3};
 
-    Polynome numerateur(num, 3);
-    Polynome denominateur(denom, 3);
+    // Polynome numerateur(num, 3);
+    // Polynome denominateur(denom, 3);
+
+    double num[] = {1, 0};
+    double denom[] = {1};
+
+    Polynome numerateur(num, 2);
+    Polynome denominateur(denom, 1);
 
     FractionRationnelle F(numerateur, denominateur);
-
-    vector<double> n;
-    vector<double> d;
-
-    n.push_back(-1);
-    n.push_back(0);
-    n.push_back(2);
-
-    d.push_back(-3);
-    d.push_back(2);
-    d.push_back(1);
-
-    // PointMassique A(0, 0.333333, -3);
-    // PointMassique B(0.428571, 0.428571, -2.333333);
-    // PointMassique C(1, 0.25, -1.3333);
-    // PointMassique D(0, 1, 0);
-    PointMassique A(0, -1, -3);
-    PointMassique B(-1, -1, -2.333333);
-    PointMassique C(-1.33, -0.3333, -1.33333);
-    PointMassique D(0, 1, 0);
-    FractionRationnelle T(A, B, C, D);
-    T.m_numerateur = n;
-    T.m_denominateur = d;
-    // cout << F.to_s() << endl;
 
     glNewList(1, GL_COMPILE_AND_EXECUTE); //liste numero 1
         trace_point(O, 0., 0., 1., 15.);  //O
@@ -255,19 +237,10 @@ void init()
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes();
-        // T.trace_assymptotes();
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        // F.trace_courbe();
-        // T.trace_courbe();
-        // trace_point(A, 0, 0,0, 5);
-        // trace_point(B, 0, 0,0, 5);
-        // trace_point(C, 0, 0,0, 5);
-        // trace_point(D, 0, 0,0, 5);
-
-        // for(double t = 0.001; t < 1; t += 0.001)X
-            de_casteljau(A, B, C, D);
+        F.trace_courbe();
     glEndList();
 
     cout << "\nDone." << endl;
