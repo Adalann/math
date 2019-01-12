@@ -27,13 +27,6 @@ Polynome::Polynome(const Polynome &original)
 
 Polynome::Polynome(const Polynome &original, int degre_limite)
 {
-    // int i = original.get_degre();
-    // while(i > degre_limite)
-    // {
-    //     m_coefficients.push_back(0);
-    //     i--;
-    // }
-
     for(int i = 0; i < degre_limite; i++)
         m_coefficients.push_back(0);
 
@@ -50,6 +43,12 @@ Polynome::Polynome(double coefficients[], size_t taille)
 {
     for(int i = taille - 1; i >= 0; i--)
         m_coefficients.push_back(coefficients[i]);
+}
+
+void Polynome::normalize()
+{
+    while(m_coefficients.back() == 0)
+        m_coefficients.pop_back();
 }
 
 int Polynome::get_degre() const
@@ -278,11 +277,11 @@ Polynome Polynome::div_euclide(const Polynome &P, const Polynome &M)
     return Q;
 }
 
-vector<double> Polynome::passage_base_bernstein() const
+vector<double> Polynome::passage_base_bernstein(int degre) const
 {
     vector<Polynome> polynomes_bernstein;
     vector<double> coefs_base_bernstein;
-    Polynome p = bernstein(get_degre(), 0);
+    Polynome p = bernstein(degre, 0);
     double coef(0);
     double alpha(0), beta(0), gamma(0), delta(0);
 
@@ -291,9 +290,9 @@ vector<double> Polynome::passage_base_bernstein() const
 
     polynomes_bernstein.push_back(p);
 
-    for (int i = 1; i <= get_degre(); i++)
+    for (int i = 1; i <= degre; i++)
     {
-        p = bernstein(get_degre(), i);
+        p = bernstein(degre, i);
         polynomes_bernstein.push_back(p);
 
         switch(i)
@@ -316,14 +315,4 @@ vector<double> Polynome::passage_base_bernstein() const
     }
 
     return coefs_base_bernstein;
-}
-
-void reverse_vector(vector<double> &v)
-{
-    for(int i = 0; i < v.size() / 2; i++)
-    {
-        double tmp = v[i];
-        v[i] = v[v.size() - 1 - i];
-        v[v.size() - 1 - i] = tmp;
-    }
 }

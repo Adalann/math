@@ -17,6 +17,7 @@ class Polynome
     Polynome(double coefficients[], size_t taille);
 
     // Méthodes
+    void normalize();
     int get_degre() const;
     int solve(double &x1, double &x2) const;
     double get_last_coef() const;
@@ -25,7 +26,7 @@ class Polynome
     double value_for(double x) const;
     std::vector<double> get_coefs() const;
     static Polynome div_euclide(Polynome const &p1, Polynome const &p2);
-    std::vector<double> passage_base_bernstein() const;
+    std::vector<double> passage_base_bernstein(int degre) const;
 
     //Surchage d'opérateur
     Polynome &operator+=(const Polynome &p);

@@ -2,6 +2,7 @@
 #define DEF_POINT_MASSIQUE
 
 #include "Point.h"
+#include <ostream>
 
 class PointMassique : public Point
 {
@@ -19,6 +20,7 @@ class PointMassique : public Point
     void display() const;
 
     static Point barycentre(const PointMassique &a, const PointMassique &b);
+    friend std::ostream &operator<<(std::ostream &stream, PointMassique &p);
 
   private:
 

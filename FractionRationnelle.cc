@@ -5,6 +5,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 class Polynome;
 
@@ -50,18 +51,20 @@ FractionRationnelle::FractionRationnelle(Polynome numerateur, Polynome denominat
     while(Q.get_degre() < degre_max)
         Q.add_coef(0.);
 
-    vector<double> coef_P  = P.passage_base_bernstein();
-    vector<double> coef_Q  = Q.passage_base_bernstein();
-    vector<double> coef_tQ = tQ.passage_base_bernstein();
+    vector<double> coef_P = P.passage_base_bernstein(degre_max);
+    vector<double> coef_Q = Q.passage_base_bernstein(degre_max);
+    vector<double> coef_tQ = tQ.passage_base_bernstein(degre_max);
 
+    ofstream fichier_points("points.txt", ios::trunc);
     for(int i = 0; i <= degre_max; i++)
     {
         double diviseur = (coef_Q[i] == 0 ? 1 : coef_Q[i]);
 
         PointMassique p(PointMassique(coef_tQ[i] / diviseur, coef_P[i] / diviseur, coef_Q[i]));
         m_points_controle.push_back(p);
-        p.display();
+        fichier_points << p << endl;
     }
+    fichier_points.close();
 }
 
 FractionRationnelle::FractionRationnelle(const vector<double> &numerateur, const vector<double> &denominateur) : FractionRationnelle(Polynome(numerateur), Polynome(denominateur))

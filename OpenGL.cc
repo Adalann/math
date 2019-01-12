@@ -25,9 +25,9 @@
 
 using namespace std;
 
-double Scal = 0.1;
+double Scal = 17;
 
-double trX = 0.0, trY = 0.0, dist = 0.; //,trZ=0.0
+double trX = 0.0, trY = 0.0, dist = 17.; //,trZ=0.0
 char pressRight, pressLeft;
 int anglex, angley, xLeft, yLeft, xLeftOld, yLeftOld;
 int xRight, yRight, xRightOld, yRightOld;
@@ -39,16 +39,22 @@ void reshape(int x, int y);
 void idle();
 void mouse(int bouton, int etat, int x, int y);
 void mousemotion(int x, int y);
+void menu(Polynome &numerateur, Polynome &denominateur);
 
 //-************************************************************
 //
 //  Procedure avec mise en file des sommets des primitives
 //
 //-***********************************************************
-void init();
+void init(Polynome &numerateur, Polynome &denominateur);
 
 int main(int argc, char **argv)
 {
+    Polynome numerateur;
+    Polynome denominateur;
+
+    menu(numerateur, denominateur);
+
     /* initialisation de glut et creation de la fenetre */
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -76,9 +82,8 @@ int main(int argc, char **argv)
     // glEnable(GL_LIGHTING);
     glDisable(GL_LIGHTING);
 
-
     /* enregistrement des fonctions de rappel */
-    init();
+    init(numerateur, denominateur);
     glutDisplayFunc(affichage);
     glutKeyboardFunc(clavier);
     glutReshapeFunc(reshape);
@@ -108,7 +113,7 @@ void zoomIn()
 
 void zoomOut()
 {
-    if(dist >= 0.5)
+    if(dist > 1)
     {
         dist -= 0.5;
         Scal -= 0.5;
@@ -204,19 +209,10 @@ void mousemotion(int x, int y)
  ****************************************************************/
 
 //fonction ou les objets sont a definir
-void init()
+void init(Polynome &numerateur, Polynome &denominateur)
 { 
     Point O(0., 0.), I(1., 0.), J(0., 1.);
     Segment abscisse(-1000000, 0, 1000000, 0), ordonnee(0, -1000000, 0, 1000000);
-
-    // double num[] = {1, -4, -11, 16};
-    // double denom[] = {1, 2, -3};
-
-    double num[] = {5, -3, 0};
-    double denom[] = {1, -9};
-
-    Polynome numerateur(num, 3);
-    Polynome denominateur(denom, 2);
 
     FractionRationnelle F(numerateur, denominateur);
 
@@ -225,9 +221,14 @@ void init()
         trace_point(I, 1., 0., 0., 10.);  //I
         trace_point(J, 0., 0.5, 0., 10.); //J
         trace_segment(O, I, 1.0, 0.0, 1.0, 2.0);  // on trace [OI]
-        trace_segment(O, J, 1.0, 0.5, 0.0, 2.0); // on trace [OJ]
+        trace_segment(O, J, 1.0, 0.5, 0.0, 2.0);  // on trace [OJ]
         trace_segment(abscisse, 0., 0., 0., 0.5); // on trace l'axe des abcsisse
         trace_segment(ordonnee, 0., 0., 0., 0.5); // on trace l'axe des ordonnees
+        for(int i = -100; i <= 100; i++) // boucle pour les graduations
+        {
+            trace_segment(i, -0.25, i, 0.25, (i % 10 == 0 ? 255. : 0.), 0., 0., 0.3);
+            trace_segment(-0.25, i, 0.25, i, (i % 10 == 0 ? 255. : 0.), 0., 0., 0.3);
+        }
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
@@ -236,10 +237,10 @@ void init()
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        
+
     glEndList();
 
-    cout << "\nDone." << endl;
+    cout << "\nFin !" << endl;
 }
 
 // fonction permettant d'afficher les objets en utilisant des listes   
@@ -265,4 +266,62 @@ void affichage()
     glFlush();
     // On echange les buffers
     glutSwapBuffers();
+}
+
+void menu(Polynome &numerateur, Polynome &denominateur)
+{
+    cout << "========= Affichage de fractions rationnelles à l'aide de courbes de Bézier =========" << endl;
+
+    cout << "\n\n";
+    cout << "1.\tf(x) = (2x² - 1) / (x² + 2x - 3)" << endl;
+    cout << "2.\tf(x) = (x³ - 4x² - 11x + 16) / (x² + 2x - 3)" << endl;
+    cout << "3.\tf(x) = (x² - x - 1) / (2x - 3)" << endl;
+    cout << "4.\tf(x) = x²" << endl;
+    cout << "5.\tEntrer les coefficients" << endl;
+    cout << "6.\tQuitter le programme" << endl;
+    cout << "\n\n";
+
+    int input(0);
+    double coef(0);
+    vector<double> num;
+    vector<double> denom;
+
+    do {
+        cin >> input;
+        switch (input)
+        {
+            case 1:
+                numerateur = Polynome(vector<double>({2, 0, -1}));
+                denominateur = Polynome(vector<double>({1, 2, -3}));
+                break;
+            case 2:
+                numerateur = Polynome(vector<double>({1, -4, -11, 16}));
+                denominateur = Polynome(vector<double>({1, 2, -3}));
+                break;
+            case 3:
+                numerateur = Polynome(vector<double>({1, -1, -1}));
+                denominateur = Polynome(vector<double>({2, -3}));
+                break;
+            case 4:
+                numerateur = Polynome(vector<double>({1, 0, 0}));
+                denominateur = Polynome(vector<double>({1}));
+                break;
+            case 5:
+                cout << "Entrez les coeficients tels que l'on ai :  f(x) = (ax³ + bx² + cx + d) / (ex² + fx + g)" << endl;
+                for(char i = 97; i < 104; i++)
+                {
+                    cout << i << " : ";
+                    cin >> coef;
+                    if(i < 101)
+                        num.push_back(coef);
+                    else
+                        denom.push_back(coef);
+                }
+                numerateur = Polynome(num);
+                numerateur.normalize();
+                denominateur = Polynome(denom);
+                denominateur.normalize();
+                break;
+        }
+    } while (input < 0 && input > 5);
 }

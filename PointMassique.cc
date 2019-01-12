@@ -97,6 +97,12 @@ void PointMassique::display() const
     cout << "x : " << x << " y : " << y << " w : " << w << endl;
 }
 
+ostream &operator<<(ostream &stream, PointMassique &p)
+{
+    stream << "x : " << p.getX() << " y : " << p.getY() << " w : " << p.getW();
+    return stream;
+}
+
 double PointMassique::getW() const
 {
     return w;
