@@ -5,11 +5,11 @@
 
 using namespace std;
 
-// void reverse_vector(vector<double> &v);
+// void reverse_vector(vector<float> &v);
 
 Polynome::Polynome()
 {
-    m_coefficients = vector<double>();
+    m_coefficients = vector<float>();
 }
 
 Polynome::Polynome(int degre)
@@ -33,13 +33,13 @@ Polynome::Polynome(const Polynome &original, int degre_limite)
     m_coefficients.push_back(original.m_coefficients[degre_limite]);
 }
 
-Polynome::Polynome(vector<double> coefficients)
+Polynome::Polynome(vector<float> coefficients)
 {
     for (int i = coefficients.size() - 1; i >= 0; i--)
         m_coefficients.push_back(coefficients[i]);
 }
 
-Polynome::Polynome(double coefficients[], size_t taille)
+Polynome::Polynome(float coefficients[], size_t taille)
 {
     for(int i = taille - 1; i >= 0; i--)
         m_coefficients.push_back(coefficients[i]);
@@ -56,13 +56,13 @@ int Polynome::get_degre() const
     return m_coefficients.size() - 1;
 }
 
-int Polynome::solve(double &x1, double &x2) const
+int Polynome::solve(float &x1, float &x2) const
 {
     int nb_solution = -1;
 
     if(get_degre() == 2)
     {
-        double delta = (m_coefficients[1] * m_coefficients[1]) - (4 * m_coefficients[0] * m_coefficients[2]);
+        float delta = (m_coefficients[1] * m_coefficients[1]) - (4 * m_coefficients[0] * m_coefficients[2]);
 
         if (delta < 0)
             nb_solution = 0;
@@ -87,14 +87,14 @@ int Polynome::solve(double &x1, double &x2) const
     return nb_solution;
 }
 
-double Polynome::get_last_coef() const
+float Polynome::get_last_coef() const
 {
     return m_coefficients.back();
 }
 
-double Polynome::get_coef_puissance(int d) const
+float Polynome::get_coef_puissance(int d) const
 {
-    double c = 0;
+    float c = 0;
 
     if (d < m_coefficients.size())
         c = m_coefficients[d];
@@ -104,19 +104,19 @@ double Polynome::get_coef_puissance(int d) const
     return c;
 }
 
-vector<double> Polynome::get_coefs() const
+vector<float> Polynome::get_coefs() const
 {
     return m_coefficients;
 }
 
-void Polynome::add_coef(double c)
+void Polynome::add_coef(float c)
 {
     m_coefficients.push_back(c);
 }
 
-double Polynome::value_for(double x) const
+float Polynome::value_for(float x) const
 {
-    double resultat = 0;
+    float resultat = 0;
 
     for(int i = 0; i < m_coefficients.size(); i++)
         resultat += m_coefficients[i] * pow(x, i);
@@ -167,7 +167,7 @@ Polynome& Polynome::operator-=(const Polynome &p)
     return *this;
 }
 
-void Polynome::decalage(int puissance, double coefficient = 1.0)
+void Polynome::decalage(int puissance, float coefficient = 1.0)
 {
     if (puissance == 0)
     {
@@ -252,7 +252,7 @@ Polynome operator*(Polynome const &p1, Polynome const &p2)
         tmp.decalage(i);
         for(int j = 0; j <= p2.get_degre(); j++)
         {
-            double d = p1.get_coefs()[i] * p2.get_coefs()[j];
+            float d = p1.get_coefs()[i] * p2.get_coefs()[j];
             tmp.add_coef(d);
         }
         resultat += tmp;
@@ -277,13 +277,13 @@ Polynome Polynome::div_euclide(const Polynome &P, const Polynome &M)
     return Q;
 }
 
-vector<double> Polynome::passage_base_bernstein(int degre) const
+vector<float> Polynome::passage_base_bernstein(int degre) const
 {
     vector<Polynome> polynomes_bernstein;
-    vector<double> coefs_base_bernstein;
+    vector<float> coefs_base_bernstein;
     Polynome p = bernstein(degre, 0);
-    double coef(0);
-    double alpha(0), beta(0), gamma(0), delta(0);
+    float coef(0);
+    float alpha(0), beta(0), gamma(0), delta(0);
 
     coefs_base_bernstein.push_back(m_coefficients[0]);
     alpha = m_coefficients[0];

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int recursion_level, double t, int recursion_cout)
+void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int recursion_level, float t, int recursion_cout)
 {
     Point N0;
     Point N1;
@@ -24,7 +24,7 @@ void de_casteljau(const Point &P0, const Point &P1, const Point &P2, int recursi
     }
 }
 
-void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point &P3, int recursion_level, double t, int recursion_cout)
+void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point &P3, int recursion_level, float t, int recursion_cout)
 {
     Point N0;
     Point N1;
@@ -53,7 +53,7 @@ void de_casteljau(const Point &P0, const Point &P1, const Point &P2, const Point
     }
 }
 
-void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, int recursion_level, double t, int recursion_cout)
+void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, int recursion_level, float t, int recursion_cout)
 {
     PointMassique N0;
     PointMassique N1;
@@ -74,7 +74,7 @@ void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointM
     }
 }
 
-void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, const PointMassique &P3, int recursion_level, double t, int recursion_cout)
+void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, const PointMassique &P3, int recursion_level, float t, int recursion_cout)
 {
     PointMassique N0;
     PointMassique N1;

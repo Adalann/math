@@ -25,9 +25,9 @@
 
 using namespace std;
 
-double Scal = 17;
+float Scal = 17;
 
-double trX = 0.0, trY = 0.0, dist = 17.; //,trZ=0.0
+float trX = 0.0, trY = 0.0, dist = 17.; //,trZ=0.0
 char pressRight, pressLeft;
 int anglex, angley, xLeft, yLeft, xLeftOld, yLeftOld;
 int xRight, yRight, xRightOld, yRightOld;
@@ -142,7 +142,7 @@ void reshape(int x, int y)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //taille de la scene
-    double Ortho = -300;
+    float Ortho = -300;
     glOrtho(-Ortho, Ortho, -Ortho, Ortho, -Ortho, Ortho); // fenetre
     glMatrixMode(GL_MODELVIEW);
     glViewport(0,0,x,y);
@@ -234,6 +234,7 @@ void init(Polynome &numerateur, Polynome &denominateur)
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes();
         F.trace_courbe();
+        // F.changement_homographique();
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
@@ -282,29 +283,29 @@ void menu(Polynome &numerateur, Polynome &denominateur)
     cout << "\n\n";
 
     int input(0);
-    double coef(0);
-    vector<double> num;
-    vector<double> denom;
+    float coef(0);
+    vector<float> num;
+    vector<float> denom;
 
     do {
         cin >> input;
         switch (input)
         {
             case 1:
-                numerateur = Polynome(vector<double>({2, 0, -1}));
-                denominateur = Polynome(vector<double>({1, 2, -3}));
+                numerateur = Polynome(vector<float>({2, 0, -1}));
+                denominateur = Polynome(vector<float>({1, 2, -3}));
                 break;
             case 2:
-                numerateur = Polynome(vector<double>({1, -4, -11, 16}));
-                denominateur = Polynome(vector<double>({1, 2, -3}));
+                numerateur = Polynome(vector<float>({1, -4, -11, 16}));
+                denominateur = Polynome(vector<float>({1, 2, -3}));
                 break;
             case 3:
-                numerateur = Polynome(vector<double>({1, -1, -1}));
-                denominateur = Polynome(vector<double>({2, -3}));
+                numerateur = Polynome(vector<float>({1, -1, -1}));
+                denominateur = Polynome(vector<float>({2, -3}));
                 break;
             case 4:
-                numerateur = Polynome(vector<double>({1, 0, 0}));
-                denominateur = Polynome(vector<double>({1}));
+                numerateur = Polynome(vector<float>({1, 0, 0}));
+                denominateur = Polynome(vector<float>({1}));
                 break;
             case 5:
                 cout << "Entrez les coeficients tels que l'on ai :  f(x) = (ax³ + bx² + cx + d) / (ex² + fx + g)" << endl;

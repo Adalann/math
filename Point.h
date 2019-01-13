@@ -13,24 +13,24 @@ class Point
   public:
 
     Point();
-    Point(double X, double Y);
+    Point(float X, float Y);
 
     Point &operator+=(Point const &p);
-    Point &operator*=(double scalaire);
+    Point &operator*=(float scalaire);
 
-    double getX() const;
-    double getY() const;
+    float getX() const;
+    float getY() const;
 
     void print(std::string comment = "") const;
-    void trace(double taille = 0.75, double r = 255, double g = 0, double b = 0) const;
+    void trace(float taille = 0.75, float r = 255, float g = 0, float b = 0) const;
 
   protected:
   
-    double x;
-    double y;
+    float x;
+    float y;
 };
 
 Point operator+(Point const &p1, Point const &p2);
-Point operator*(Point const &p, double scalaire);
+Point operator*(Point const &p, float scalaire);
 
 #endif

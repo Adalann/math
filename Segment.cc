@@ -13,7 +13,7 @@ Segment::Segment(Point A, Point B)
     b = B;
 }
 
-Segment::Segment(double x0, double y0, double x1, double y1)
+Segment::Segment(float x0, float y0, float x1, float y1)
 {
     a = Point(x0, y0);
     b = Point(x1, y1);
@@ -29,22 +29,22 @@ Point Segment::getB() const
     return b;
 }
 
-double Segment::getXA() const
+float Segment::getXA() const
 {
     return a.getX();
 }
 
-double Segment::getYA() const
+float Segment::getYA() const
 {
     return a.getY();
 }
 
-double Segment::getXB() const
+float Segment::getXB() const
 {
     return b.getX();
 }
 
-double Segment::getYB() const
+float Segment::getYB() const
 {
     return b.getY();
 }

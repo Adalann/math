@@ -9,7 +9,7 @@ Point::Point()
     y = 0.;
 }
 
-Point::Point(double X, double Y)
+Point::Point(float X, float Y)
 {
     x = X;
     y = Y; 
@@ -23,7 +23,7 @@ Point &Point::operator+=(Point const &p)
     return *this;
 }
 
-Point &Point::operator*=(double scalaire)
+Point &Point::operator*=(float scalaire)
 {
     x *= scalaire;
     y *= scalaire;
@@ -31,12 +31,12 @@ Point &Point::operator*=(double scalaire)
     return *this;
 }
 
-double Point::getX() const
+float Point::getX() const
 {
     return x;
 }
 
-double Point::getY() const
+float Point::getY() const
 {
     return y;
 }
@@ -46,7 +46,7 @@ void Point::print(string comment) const
     cout << comment << " x = " << x << ", y = " << y << endl;
 }
 
-void Point::trace(double taille, double r, double g, double b) const
+void Point::trace(float taille, float r, float g, float b) const
 {
     glColor3f(r, g, b);   // initialisation de la couleur
     glPointSize(taille);  // initialisation de la taille
@@ -64,7 +64,7 @@ Point operator+(Point const &p1, Point const &p2)
     return copie;
 }
 
-Point operator*(Point const &p, double scalaire)
+Point operator*(Point const &p, float scalaire)
 {
     Point copie(p);
     copie *= scalaire;

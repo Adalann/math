@@ -1,4 +1,3 @@
-#CC       = gcc
 CC        = g++
 HDR_PATHS = -I/usr/X11R6/include
 LIBS      = -lglut -lGLU -lGL -lm -L/usr/X11/lib -lXext #-lXmu -lXi -lX11 -g-std=c++98

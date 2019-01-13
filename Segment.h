@@ -9,14 +9,14 @@ class Segment
 
     Segment();
     Segment(Point a, Point B);
-    Segment(double x0, double y0, double x1, double y1);
+    Segment(float x0, float y0, float x1, float y1);
 
     Point getA() const;
     Point getB() const;
-    double getXA() const;
-    double getYA() const;
-    double getXB() const;
-    double getYB() const;
+    float getXA() const;
+    float getYA() const;
+    float getXB() const;
+    float getYB() const;
 
     private:
 

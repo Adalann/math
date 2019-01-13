@@ -10,14 +10,14 @@ PointMassique::PointMassique()
     w = 0;
 }
 
-PointMassique::PointMassique(const Point& p, double W)
+PointMassique::PointMassique(const Point& p, float W)
 {
     x = p.getX();
     y = p.getY();
     w = W;
 }
 
-PointMassique::PointMassique(double X, double Y, double W)
+PointMassique::PointMassique(float X, float Y, float W)
 {
     x = X;
     y = Y;
@@ -53,7 +53,7 @@ PointMassique &PointMassique::operator+=(PointMassique const &p)
     return *this;
 }
 
-PointMassique &PointMassique::operator*=(double scalaire)
+PointMassique &PointMassique::operator*=(float scalaire)
 {
 
     if (scalaire != 0 && w == 0)
@@ -75,8 +75,8 @@ PointMassique &PointMassique::operator*=(double scalaire)
 
 Point PointMassique::barycentre(const PointMassique &a, const PointMassique &b)
 {
-    double x = 0;
-    double y = 0;
+    float x = 0;
+    float y = 0;
 
     if(a.w + b.w == 0)
     {
@@ -103,7 +103,7 @@ ostream &operator<<(ostream &stream, PointMassique &p)
     return stream;
 }
 
-double PointMassique::getW() const
+float PointMassique::getW() const
 {
     return w;
 }
@@ -116,7 +116,7 @@ PointMassique operator+(PointMassique const &p1, PointMassique const &p2)
     return copie;
 }
 
-PointMassique operator*(PointMassique const &p, double scalaire)
+PointMassique operator*(PointMassique const &p, float scalaire)
 {
     PointMassique copie(p);
     copie *= scalaire;

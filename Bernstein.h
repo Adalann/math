@@ -9,7 +9,7 @@
 int factorielle(int n);
 int coef_binomial(int n, int k);
 
-double bernstein(int degre, int indice, double t);
+float bernstein(int degre, int indice, float t);
 Polynome bernstein(int degre, int indice);
 
 #endif

@@ -13,15 +13,16 @@ class FractionRationnelle
     FractionRationnelle();
     FractionRationnelle(PointMassique p1, PointMassique p2, PointMassique p3, PointMassique p4);
     FractionRationnelle(Polynome numerateur, Polynome denominateur);
-    FractionRationnelle(const std::vector<double> &numerateur, const std::vector<double> &denominateur);
-    FractionRationnelle(double num[], size_t taille_num, double denom[], size_t taille_denom);
+    FractionRationnelle(const std::vector<float> &numerateur, const std::vector<float> &denominateur);
+    FractionRationnelle(float num[], size_t taille_num, float denom[], size_t taille_denom);
 
     // Méthodes
-    double get_numerateur() const;
-    double get_denominateur() const;
+    float get_numerateur() const;
+    float get_denominateur() const;
     void trace_assymptotes() const;
     void trace_courbe() const;
-    void affiche_points_controles() const;
+    void changement_homographique() const;
+    // void affiche_points_controles() const;
 
     // Méthodes d'affichage
     std::string to_s() const;
