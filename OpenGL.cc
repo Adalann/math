@@ -234,11 +234,10 @@ void init(Polynome &numerateur, Polynome &denominateur)
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes();
         F.trace_courbe();
-        // F.changement_homographique();
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-
+        F.changement_homographique();
     glEndList();
 
     cout << "\nFin !" << endl;

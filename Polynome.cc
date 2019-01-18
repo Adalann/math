@@ -58,7 +58,7 @@ int Polynome::get_degre() const
 
 int Polynome::solve(float &x1, float &x2) const
 {
-    int nb_solution = -1;
+    int nb_solution = 0;
 
     if(get_degre() == 2)
     {

@@ -123,3 +123,4 @@ PointMassique operator*(PointMassique const &p, float scalaire)
 
     return copie;
 }
+
