@@ -5,8 +5,6 @@
 
 using namespace std;
 
-// void reverse_vector(vector<float> &v);
-
 Polynome::Polynome()
 {
     m_coefficients = vector<float>();
@@ -75,6 +73,13 @@ int Polynome::solve(float &x1, float &x2) const
         {
             x1 = (-m_coefficients[1] + sqrt(delta)) / (2 * m_coefficients[2]);
             x2 = (-m_coefficients[1] - sqrt(delta)) / (2 * m_coefficients[2]);
+
+            if(x1 > x2)
+            {
+                float temp = x1;
+                x1 = x2;
+                x2 = temp;
+            }
             nb_solution = 2;
         }
     }

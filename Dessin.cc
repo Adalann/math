@@ -50,7 +50,7 @@ void trace_segment(Segment s, float red, float green, float blue, float size)
 void trace_courbe_bezier(vector<PointMassique> points)
 {
     int degre_max = points.size() - 1;
-    Point old_point;
+    vector<Point> liste_points;
 
     for (float t = 0.001; t < 1; t += 0.001)
     {
@@ -76,9 +76,10 @@ void trace_courbe_bezier(vector<PointMassique> points)
                 }
             }
 
-            Point new_point(x / denom, y / denom);
-            trace_point(new_point, 0, 0, 255, 2);
-            old_point = new_point;
+            liste_points.push_back(Point(x / denom, y / denom));
         }
     }
+
+    for (int i = 0; i < liste_points.size() - 1; i++)
+        trace_segment(liste_points[i], liste_points[i + 1], 0, 0, 255, 2);
 }

@@ -233,7 +233,7 @@ void init(Polynome &numerateur, Polynome &denominateur)
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes(); // Lance l'affichage des assymptotes
-        F.trace_courbe();      // Trace la courbe dentre 0 et 1
+        // F.trace_courbe();      // Trace la courbe dentre 0 et 1
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3

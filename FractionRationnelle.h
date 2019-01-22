@@ -22,7 +22,6 @@ class FractionRationnelle
     void trace_assymptotes() const;
     void trace_courbe() const;
     void changement_homographique() const;
-    // void affiche_points_controles() const;
 
     // Méthodes d'affichage
     std::string to_s() const;

@@ -120,6 +120,7 @@ void FractionRationnelle::changement_homographique() const
     PointMassique Q0, Q1, Q2, Q3;
 
     nb_racines = m_denominateur.solve(x1, x2);
+    cout << "x1: " << x1 << " x2: " << x2 << endl;
 
     if (nb_racines == 0 || (nb_racines == 1 && x1 == 0.0))
     {
@@ -132,7 +133,7 @@ void FractionRationnelle::changement_homographique() const
         Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
         Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
 
-        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
+        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
 
         // On trace de 0 a +inf
         a = 0; b = 1; c = 1; d = 0;
@@ -141,11 +142,13 @@ void FractionRationnelle::changement_homographique() const
         Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
         Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
 
-        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
+        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
     }
     else if (nb_racines ==  2)
     {
-        a = -1; b = -6; c = 0; d = 2;
+        a = -1; b = x1 * x1; c = 0; d = x1;
+
+        cout << "entre " << a / c << " et " << b / d << endl;
 
         Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
         Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
@@ -155,7 +158,8 @@ void FractionRationnelle::changement_homographique() const
         // de_casteljau(Q0, Q1, Q2, Q3);
         trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
-        a = -6; b = 1; c = 2; d = 1;
+        a = x1 * x1; b = x2 * x2 * x2; c = x1; d = x2 * x2;
+        cout << "entre " << a / c << " et " << b / d << endl;
 
         Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
         Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
@@ -163,9 +167,10 @@ void FractionRationnelle::changement_homographique() const
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
         // de_casteljau(Q0, Q1, Q2, Q3);
-        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
+        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
-        a = 1; b = 3; c = 1; d = 0;
+        a = x2 * x2; b = 1; c = x2; d = 0;
+        cout << "entre " << a / c << " et " << b / d << endl;
 
         Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
         Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
@@ -173,7 +178,7 @@ void FractionRationnelle::changement_homographique() const
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
         // de_casteljau(Q0, Q1, Q2, Q3);
-        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
+        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
     }
 }
 
