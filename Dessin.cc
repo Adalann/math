@@ -1,5 +1,4 @@
 #include "Dessin.h"
-#include <vector>
 
 using namespace std;
 
@@ -46,4 +45,40 @@ void trace_segment(Point p0, Point p1, float red, float green, float blue, float
 void trace_segment(Segment s, float red, float green, float blue, float size)
 {
     trace_segment(s.getA(), s.getB(), red, green, blue, size);
+}
+
+void trace_courbe_bezier(vector<PointMassique> points)
+{
+    int degre_max = points.size() - 1;
+    Point old_point;
+
+    for (float t = 0.001; t < 1; t += 0.001)
+    {
+        double denom = 0;
+        for (int i = 0; i < points.size(); i++)
+            denom += points[i].getW() * bernstein(degre_max, i, t);
+        if (denom == 0)
+            ;
+        else
+        {
+            double x(0), y(0);
+            for (int i = 0; i < points.size(); i++)
+            {
+                if (points[i].getW() != 0)
+                {
+                    x += points[i].getW() * bernstein(degre_max, i, t) * points[i].getX();
+                    y += points[i].getW() * bernstein(degre_max, i, t) * points[i].getY();
+                }
+                else
+                {
+                    x += bernstein(degre_max, i, t) * points[i].getX();
+                    y += bernstein(degre_max, i, t) * points[i].getY();
+                }
+            }
+
+            Point new_point(x / denom, y / denom);
+            trace_point(new_point, 0, 0, 255, 2);
+            old_point = new_point;
+        }
+    }
 }

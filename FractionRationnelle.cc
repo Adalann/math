@@ -109,10 +109,7 @@ void FractionRationnelle::trace_assymptotes() const
 
 void FractionRationnelle::trace_courbe() const
 {
-    if(m_points_controle.size() == 3)
-        de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2]);
-    else if(m_points_controle.size() == 4)
-        de_casteljau(m_points_controle[0], m_points_controle[1], m_points_controle[2], m_points_controle[3]);
+    trace_courbe_bezier(m_points_controle);
 }
 
 void FractionRationnelle::changement_homographique() const
@@ -131,30 +128,20 @@ void FractionRationnelle::changement_homographique() const
 
         a = -1; b = 0; c = 0; d = 1;
 
-        pts[0] = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
-        pts[1] = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
-        pts[2] = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
+        Q0 = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
+        Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
+        Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
 
-        cout << "-inf to 0" << endl;
-        cout << pts[0] << endl;
-        cout << pts[1] << endl;
-        cout << pts[2] << endl;
-
-        de_casteljau(pts[0], pts[1], pts[2]);
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
 
         // On trace de 0 a +inf
         a = 0; b = 1; c = 1; d = 0;
 
-        pts[0] = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
-        pts[1] = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
-        pts[2] = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
+        Q0 = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
+        Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
+        Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
 
-        cout << "0 to +inf" << endl;
-        cout << pts[0] << endl;
-        cout << pts[1] << endl;
-        cout << pts[2] << endl;
-
-        de_casteljau(pts[0], pts[1], pts[2]);
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
     }
     else if (nb_racines ==  2)
     {
@@ -165,7 +152,8 @@ void FractionRationnelle::changement_homographique() const
         Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        de_casteljau(Q0, Q1, Q2, Q3);
+        // de_casteljau(Q0, Q1, Q2, Q3);
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
         a = -6; b = 1; c = 2; d = 1;
 
@@ -174,7 +162,8 @@ void FractionRationnelle::changement_homographique() const
         Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        de_casteljau(Q0, Q1, Q2, Q3);
+        // de_casteljau(Q0, Q1, Q2, Q3);
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
         a = 1; b = 3; c = 1; d = 0;
 
@@ -183,7 +172,8 @@ void FractionRationnelle::changement_homographique() const
         Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        de_casteljau(Q0, Q1, Q2, Q3);
+        // de_casteljau(Q0, Q1, Q2, Q3);
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
     }
 }
 

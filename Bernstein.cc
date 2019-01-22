@@ -47,7 +47,5 @@ Polynome bernstein(int degre, int indice)
         }
     }
 
-    // b.affiche_polynome("Bern :");
-
     return b;
 }

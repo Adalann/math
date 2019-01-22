@@ -1,6 +1,9 @@
 #include "Casteljau.h"
 #include <iostream>
 
+#include "Dessin.h"
+#include "Bernstein.h"
+
 using namespace std;
 
 void de_casteljau(const PointMassique &P0, const PointMassique &P1, const PointMassique &P2, int recursion_level, float t, int recursion_cout)

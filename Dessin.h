@@ -4,7 +4,10 @@
 #include <GLUT/glut.h>
 #endif
 #include "Point.h"
+#include "PointMassique.h"
 #include "Segment.h"
+#include "Bernstein.h"
+#include <vector>
 
 /****************************************************************
  **                                                            **
@@ -26,3 +29,5 @@ void trace_segment(Point p0, Point p1, float red, float green, float blue, float
 
 // Trace un segment à partir d'un objet segment
 void trace_segment(Segment s, float red, float green, float blue, float size);
+
+void trace_courbe_bezier(std::vector<PointMassique> points);

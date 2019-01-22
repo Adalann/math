@@ -45,7 +45,7 @@ void menu(Polynome &numerateur, Polynome &denominateur);
 //
 //  Procedure avec mise en file des sommets des primitives
 //
-//-***********************************************************
+//-************************************************************
 void init(Polynome &numerateur, Polynome &denominateur);
 
 int main(int argc, char **argv)
@@ -232,12 +232,12 @@ void init(Polynome &numerateur, Polynome &denominateur)
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
-        F.trace_assymptotes();
-        F.trace_courbe();
+        F.trace_assymptotes(); // Lance l'affichage des assymptotes
+        F.trace_courbe();      // Trace la courbe dentre 0 et 1
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
-        F.changement_homographique();
+        F.changement_homographique(); // Réalise le changement de paramètre homographique
     glEndList();
 
     cout << "\nFin !" << endl;
@@ -268,6 +268,7 @@ void affichage()
     glutSwapBuffers();
 }
 
+// Fonction pour gérer l'afichage du menu
 void menu(Polynome &numerateur, Polynome &denominateur)
 {
     cout << "========= Affichage de fractions rationnelles à l'aide de courbes de Bézier =========" << endl;
