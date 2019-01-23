@@ -47,7 +47,7 @@ void trace_segment(Segment s, float red, float green, float blue, float size)
     trace_segment(s.getA(), s.getB(), red, green, blue, size);
 }
 
-void trace_courbe_bezier(vector<PointMassique> points)
+void trace_courbe_bezier(vector<PointMassique> points, float red, float green, float blue, float size)
 {
     int degre_max = points.size() - 1;
     vector<Point> liste_points;
@@ -75,11 +75,12 @@ void trace_courbe_bezier(vector<PointMassique> points)
                     y += bernstein(degre_max, i, t) * points[i].getY();
                 }
             }
-
-            liste_points.push_back(Point(x / denom, y / denom));
+            Point p(x / denom, y / denom);
+            liste_points.push_back(p);
+            // trace_point(p, 255, 0, 0 , 5);
         }
     }
 
     for (int i = 0; i < liste_points.size() - 1; i++)
-        trace_segment(liste_points[i], liste_points[i + 1], 0, 0, 255, 2);
+        trace_segment(liste_points[i], liste_points[i + 1], red, green, blue, size);
 }

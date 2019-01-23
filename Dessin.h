@@ -30,4 +30,4 @@ void trace_segment(Point p0, Point p1, float red, float green, float blue, float
 // Trace un segment à partir d'un objet segment
 void trace_segment(Segment s, float red, float green, float blue, float size);
 
-void trace_courbe_bezier(std::vector<PointMassique> points);
+void trace_courbe_bezier(std::vector<PointMassique> points, float red = 0, float green = 0, float blue = 255, float size = 2);

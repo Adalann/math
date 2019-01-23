@@ -233,7 +233,7 @@ void init(Polynome &numerateur, Polynome &denominateur)
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
         F.trace_assymptotes(); // Lance l'affichage des assymptotes
-        // F.trace_courbe();      // Trace la courbe dentre 0 et 1
+        F.trace_courbe();      // Trace la courbe dentre 0 et 1
     glEndList();
 
     glNewList(3, GL_COMPILE_AND_EXECUTE); //liste numero 3
@@ -260,9 +260,9 @@ void affichage()
     glRotatef(180, 0.0, 1.0, 0.0);
     glRotatef(180, 1.0, 0.0, 0.0);
     glTranslatef(-trX, trY, 0.);
-        glCallList(1); // appel de la liste numero 1
-        glCallList(2);   // appel de la liste numero 2
-        glCallList(3);   // appel de la liste numero 3
+        glCallList(2); // appel de la liste numero 1
+        glCallList(3);   // appel de la liste numero 2
+        glCallList(1);   // appel de la liste numero 3
     glFlush();
     // On echange les buffers
     glutSwapBuffers();

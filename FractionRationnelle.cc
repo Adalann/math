@@ -83,18 +83,18 @@ void FractionRationnelle::trace_assymptotes() const
     float x1(0), x2(0);
     int nb_racine = m_denominateur.solve(x1, x2);
     if(nb_racine == 1)
-        trace_segment(x1, -100000, x1, 100000, 0, 200, 0, 2);
+        trace_segment(x1, -100000, x1, 100000, 0, 200, 0, 1);
     else if(nb_racine == 2)
     {
-        trace_segment(x1, -100000, x1, 100000, 0, 200, 0, 2);
-        trace_segment(x2, -100000, x2, 100000, 0, 200, 0, 2);
+        trace_segment(x1, -100000, x1, 100000, 0, 200, 0, 1);
+        trace_segment(x2, -100000, x2, 100000, 0, 200, 0, 1);
     }
 
     // Assymptote horizontale
     if (m_numerateur.get_degre() == m_denominateur.get_degre())
     {
         float y = m_numerateur.get_last_coef() / m_denominateur.get_last_coef();
-        trace_segment(-100000, y, 100000, y, 0, 100, 0, 2);
+        trace_segment(-100000, y, 100000, y, 0, 100, 0, 1);
     }
 
     // Assymptote oblique
@@ -103,13 +103,13 @@ void FractionRationnelle::trace_assymptotes() const
         Polynome oblique = Polynome::div_euclide(m_numerateur, m_denominateur);
         Point a(-100000, oblique.value_for(-100000));
         Point b(100000, oblique.value_for(100000));
-        trace_segment(a, b, 0, 100, 0, 2);
+        trace_segment(a, b, 0, 100, 0, 1);
     }
 }
 
 void FractionRationnelle::trace_courbe() const
 {
-    trace_courbe_bezier(m_points_controle);
+    trace_courbe_bezier(m_points_controle, 255, 0, 0, 3);
 }
 
 void FractionRationnelle::changement_homographique() const
@@ -122,63 +122,96 @@ void FractionRationnelle::changement_homographique() const
     nb_racines = m_denominateur.solve(x1, x2);
     cout << "x1: " << x1 << " x2: " << x2 << endl;
 
-    if (nb_racines == 0 || (nb_racines == 1 && x1 == 0.0))
+    if (m_points_controle.size() == 3)
     {
-        // On trace de -inf a 0
-        PointMassique pts[3];
-
-        a = -1; b = 0; c = 0; d = 1;
-
-        Q0 = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
-        Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
-        Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
-
-        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
-
-        // On trace de 0 a +inf
-        a = 0; b = 1; c = 1; d = 0;
+        if(nb_racines == 0 || x1 == 0)
+        {
+            a = -1; b = 0; c = 0; d = 1;
+        }
+        else
+        {
+            a = -1; b = x1; c = 0; d = 1;
+        }
 
         Q0 = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
         Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
         Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
 
-        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
+
+        if (nb_racines == 0)
+        {
+            a = 1; b = 0; c = 0; d = 1;
+        }
+        else
+        {
+            a = x1; b = 1; c = 1; d = 0;
+        }
+
+        Q0 = (m_points_controle[0] * pow(c - a, 2)) + (m_points_controle[1] * 2 * a * (c - a)) + (m_points_controle[2] * a * a);
+        Q1 = (m_points_controle[0] * (c - a) * (d - b)) + (m_points_controle[1] * (b * c - 2 * a * b + a * d)) + (m_points_controle[2] * (a * b));
+        Q2 = (m_points_controle[0] * pow(d - b, 2)) + (m_points_controle[1] * 2 * b * (d - b)) + (m_points_controle[2] * b * b);
+
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2}));
     }
-    else if (nb_racines ==  2)
+    else if (m_points_controle.size() ==  4)
     {
-        a = -1; b = x1 * x1; c = 0; d = x1;
+        if(nb_racines == 0 || x1 == 0)
+        {
+            a = -1; b = 0; c = 0; d = 1;
+        }
+        else if(nb_racines >= 1)
+        {
+            a = (x1 == 1 ? -2 : -1);
+            b = x1; c = 0; d = 1;
+        }
 
-        cout << "entre " << a / c << " et " << b / d << endl;
+        cout << "entre " << a / c << " et " << b / d << endl; 
+        cout << a << " " << b << " " << c << " " << d << endl;
 
         Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
         Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
         Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        // de_casteljau(Q0, Q1, Q2, Q3);
         trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
-        a = x1 * x1; b = x2 * x2 * x2; c = x1; d = x2 * x2;
+        if (nb_racines == 0 || x1 == 0)
+        {
+            a = 1; b = 0; c = 0; d = 1;
+        }
+        else if(nb_racines == 1)
+        {
+            a = x1; b = 1; c = 1; d = 0;
+        }
+        else if(nb_racines == 2)
+        {
+            a = x1; b = x2; c = 1; d = 1;
+        }
+
         cout << "entre " << a / c << " et " << b / d << endl;
+        cout << a << " " << b << " " << c << " " << d << endl;
 
         Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
         Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
         Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
         Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        // de_casteljau(Q0, Q1, Q2, Q3);
-        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
+        trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
 
-        a = x2 * x2; b = 1; c = x2; d = 0;
-        cout << "entre " << a / c << " et " << b / d << endl;
+        if(nb_racines == 2)
+        {
+            a = x2 * x2; b = 1; c = x2; d = 0;
+            cout << "entre " << a / c << " et " << b / d << endl;
+            cout << a << " " << b << " " << c << " " << d << endl;
 
-        Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
-        Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
-        Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
-        Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
+            Q0 = m_points_controle[0] * pow(c - a, 3) + m_points_controle[1] * 3 * a * pow(c - a, 2) + m_points_controle[2] * 3 * a * a * (c - a) + m_points_controle[3] * a * a * a;
+            Q1 = m_points_controle[0] * pow(c - a, 2) * (d - b) + m_points_controle[1] * (2 * a * (c - a) * (d - b) + b * pow(c - a, 2)) + m_points_controle[2] * (2 * a * b * (c - a) + a * a * (d - b)) + m_points_controle[3] * a * a * b;
+            Q2 = m_points_controle[0] * pow(d - b, 2) * (c - a) + m_points_controle[1] * (2 * b * (c - a) * (d - b) + a * pow(d - b, 2)) + m_points_controle[2] * (2 * a * b * (d - b) + b * b * (c - a)) + m_points_controle[3] * a * b * b;
+            Q3 = m_points_controle[0] * pow(d - b, 3) + m_points_controle[1] * 3 * b * pow(d - b, 2) + m_points_controle[2] * 3 * b * b * (d - b) + m_points_controle[3] * b * b * b;
 
-        // de_casteljau(Q0, Q1, Q2, Q3);
-        // trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
+            trace_courbe_bezier(vector<PointMassique>({Q0, Q1, Q2, Q3}));
+        }
     }
 }
 
