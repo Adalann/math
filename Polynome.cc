@@ -289,7 +289,8 @@ vector<float> Polynome::passage_base_bernstein(int degre) const
     Polynome p = bernstein(degre, 0);
     float coef(0);
     float alpha(0), beta(0), gamma(0), delta(0);
-
+    
+    // On sait que alpha est la constante du polynôme
     coefs_base_bernstein.push_back(m_coefficients[0]);
     alpha = m_coefficients[0];
 
@@ -300,6 +301,7 @@ vector<float> Polynome::passage_base_bernstein(int degre) const
         p = bernstein(degre, i);
         polynomes_bernstein.push_back(p);
 
+        // On calcule les coeficients dans la base de Bernstein
         switch(i)
         {
             case 1:
@@ -315,7 +317,6 @@ vector<float> Polynome::passage_base_bernstein(int degre) const
                 delta = coef;
                 break;
         }
-
         coefs_base_bernstein.push_back(coef);
     }
 

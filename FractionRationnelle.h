@@ -19,7 +19,7 @@ class FractionRationnelle
     // Méthodes
     float get_numerateur() const;
     float get_denominateur() const;
-    void trace_assymptotes() const;
+    void trace_asymptotes() const;
     void trace_courbe() const;
     void changement_homographique() const;
 

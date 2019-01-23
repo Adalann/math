@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     glutInitWindowSize(1000, 1000);
     glutCreateWindow("Lanvin Martos");
     /* Initialisation d'OpenGL */
-
+    
     time_t now = time(0);
     tm * ltm = localtime(&now);
     if (ltm->tm_hour < 9 || ltm->tm_hour >= 17)
@@ -232,7 +232,7 @@ void init(Polynome &numerateur, Polynome &denominateur)
     glEndList();
 
     glNewList(2, GL_COMPILE_AND_EXECUTE); //liste numero 2
-        F.trace_assymptotes(); // Lance l'affichage des assymptotes
+        F.trace_asymptotes(); // Lance l'affichage des asymptotes
         F.trace_courbe();      // Trace la courbe dentre 0 et 1
     glEndList();
 
